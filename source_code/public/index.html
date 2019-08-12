@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="manifest" href="/manifest.json">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <link rel="shortcut icon" type="image/png" href="/img/icons/icon-72x72.png" />
+  <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
+  <link rel="apple-touch-startup-image" href="/img/icons/apple-touch-icon.png">
+  <link href="splashscreens/iphone5_splash.png"
+    media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/iphone6_splash.png"
+    media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/iphoneplus_splash.png"
+    media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/iphonex_splash.png"
+    media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/iphonexr_splash.png"
+    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/iphonexsmax_splash.png"
+    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/ipad_splash.png"
+    media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/ipadpro1_splash.png"
+    media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/ipadpro3_splash.png"
+    media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+  <link href="/img/ios_splashscreen/ipadpro2_splash.png"
+    media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>FlyCalc</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+  <style>
+    @keyframes fadein-button {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .emergency-reload-button {
+      z-index: -999;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      animation: fadein-button 0.1s linear 3.5s forwards;
+      background-color: #dddddd;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 32px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body style="background-color: #ffffff">
+  <noscript>
+    <strong>We're sorry but flycalc doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div class="emergency-reload-button">
+    <p>We're sorry but this sometimes happens on iOS devices. please reinstall the app. If resintalling doesn't help
+      please follow this manual</p>
+    <ul style="list-style-type:circle;">
+      <li>Go to iOS settings</li>
+      <li>Open Safari tab</li>
+      <li>Go to advanced</li>
+      <li>Click Website data</li>
+      <li>Search for FlyCalc</li>
+      <li>Click edit and delete the data by clicking minus sign</li>
+      <li>Thank you</li>
+    </ul>
+  </div>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>
