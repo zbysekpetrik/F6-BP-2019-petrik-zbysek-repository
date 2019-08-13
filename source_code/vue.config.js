@@ -3,7 +3,6 @@ module.exports = {
   transpileDependencies: ['vuetify'],
   chainWebpack: config => {
     config.output.chunkFilename(`js/[name].[id].[chunkhash:8].js`)
-
   },
   pwa: {
     name: "FlyCalc",
@@ -14,8 +13,8 @@ module.exports = {
     workboxPluginMode: 'GenerateSW',
     workboxOptions: {
       navigateFallback: "/",
-      include: [/\.html$/, /\.js$/, /\.css$/, /\.json$/, /\.png$/, /\.jpg$/, /\.svg$/],
-      exclude: []
+      exclude: [],
+      include: [/\.html$/, /\.js$/, /\.css$/, /\.json$/, /\.*plane.png$/, /\.*share.png$/, /\.jpg$/, /\.svg$/],
     }
   }
 };
