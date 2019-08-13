@@ -44,6 +44,25 @@
       <v-btn dark text @click="snackBar = false">Close</v-btn>
     </v-snackbar>
 
+    <v-snackbar
+      style="margin: 20px"
+      v-model="snackBariOS"
+      color="info"
+      left
+      bottom
+      multi-line
+      :timeout="0"
+    >
+      <div @click="snackBariOS = false">
+        To install the app on your iOS device in Safari:
+        tap
+        <v-img
+          style="height: 20px; width: 15px; display: inline-block;"
+          src="/img/icons/icon-share.png"
+        ></v-img>&nbsp;and then Add to Home Screen
+      </div>
+    </v-snackbar>
+
     <div style="z-index: 20" class="tabDiv">
       <transition name="fade">
         <v-tabs v-if="tabShow" centered v-model="tabModel">
@@ -103,7 +122,7 @@
             <div style="padding: 10px">
               <v-alert prominent type="success">Effectivity: 1 SEP 19</v-alert>
               <v-alert v-model="iPhone" type="info" prominent transition="scale-transition">
-                Install the app on your iOS device in safari: tap
+                To install the app on your iOS device in Safari: tap
                 <v-img
                   style="height: 20px; width: 15px; display: inline-block;"
                   src="/img/icons/icon-share.png"
@@ -176,15 +195,24 @@ export default {
     return {
       snackBar: false,
       snackBarTimeout: 6000,
+      snackBariOS: false,
       fabModel: false,
       overlayInfo: false,
-      darkMode: false
+      darkMode: false,
+      iPhone: false
     };
   },
   created() {
     this.onload();
     if (localStorage.darkMode) {
       this.darkMode = localStorage.darkMode == "true";
+    }
+    if (this.isIos() && !this.isInStandaloneMode()) {
+      if (!localStorage.promt_iOS) {
+        localStorage.promt_iOS = true;
+        this.snackBariOS = true;
+      }
+      this.iPhone = true;
     }
   },
   beforeUpdate() {
@@ -291,13 +319,6 @@ export default {
         return true;
       }
       return false;
-    },
-    iPhone() {
-      if (this.isIos() && !this.isInStandaloneMode()) {
-        return true;
-      } else {
-        return false;
-      }
     },
     hangarModel: sync("hangarPanel"),
     bottomNavDisabled: sync("bottomNavDisabled"),
