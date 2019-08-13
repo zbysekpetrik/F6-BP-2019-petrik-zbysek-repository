@@ -13,6 +13,7 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: 'default',
     workboxPluginMode: 'GenerateSW',
     workboxOptions: {
+      navigateFallback: "/",
       include: [/\.html$/, /\.js$/, /\.css$/, /\.json$/, /\.png$/, /\.jpg$/, /\.svg$/],
       exclude: []
     }
