@@ -299,7 +299,7 @@ export default {
         tempArray.push({ name: "Endurance", value: foo.endurance });
       }
       if (foo.range) {
-        tempArray.push({ name: "Range", value: foo.endurance + " NM" });
+        tempArray.push({ name: "Range", value: foo.range + " NM" });
       }
       if (foo.specificRange) {
         tempArray.push({
