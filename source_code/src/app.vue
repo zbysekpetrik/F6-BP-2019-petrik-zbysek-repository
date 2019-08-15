@@ -6,14 +6,11 @@
       v-model="topNavModel[1]"
       style="position: none;"
     >
-      <v-btn class="noopacity" height="56px" href="http://f-air.cz/" value="f-air">
+      <div style="color: white !important" class="noopacity v-btn" height="56px" value="f-air">
         <img style="width: 80px;" src="/img/icons/fair.svg" alt />
-      </v-btn>
-      <v-btn class="noopacity" height="56px" v-on:click="planeClick" v-if="planeShow" value="plane">
+      </div>
+      <v-btn class="noopacity" height="56px" v-on:click="planeClick" value="plane">
         <span>{{ middleValue }}</span>
-      </v-btn>
-      <v-btn class="noopacity" height="56px" to="/" v-else value="plane">
-        <span></span>
       </v-btn>
 
       <v-btn class="noopacity" height="56px" to="/" value="hangar">
@@ -30,6 +27,7 @@
         </div>
       </v-flex>
     </v-layout>
+    <v-btn v-show="false" style="z-index: 1000" @click="addToIDB()">efcecedcčtfsed</v-btn>
 
     <v-snackbar
       style="margin: 20px"
@@ -187,6 +185,7 @@
 </template>
 <script>
 import { sync } from "vuex-pathify";
+import { uuid } from 'vue-idb'
 
 export default {
   name: "App",
@@ -225,6 +224,15 @@ export default {
     }
   },
   methods: {
+    addToIDB() {
+      this.$db.user_config
+        .add({
+          id: uuid(),
+          store_object: "test_indexedDB",
+          created_at: new Date(),
+          name: "pastelka"
+        });
+    },
     print() {
       this.snackBar = true;
       this.$refs.routerComponent.printPDF();
@@ -254,6 +262,7 @@ export default {
     },
     planeClick: function() {
       let foo = this.$store.get("lastPlane");
+      if(foo)
       this.$router.push("/" + foo);
     },
     onload() {
