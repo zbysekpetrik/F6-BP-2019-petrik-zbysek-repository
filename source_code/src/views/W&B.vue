@@ -61,7 +61,8 @@ export default {
     "flycalc-rwy-condition": () => import(/* webpackChunkName: "flycalc-rwy-condition" */"@/components/rwy.vue"),
     "flycalc-meteo-condition": () => import(/* webpackChunkName: "flycalc-meteo-condition" */"@/components/meteo.vue"),
     "flycalc-chart-scatter": () => import(/* webpackChunkName: "flycalc-chart-scatter" */"@/components/chartScatter.vue"),
-    "flycalc-chart-bar": () => import(/* webpackChunkName: "flycalc-chart-bar" */"@/components/chartBar.vue")
+    "flycalc-chart-bar": () => import(/* webpackChunkName: "flycalc-chart-bar" */"@/components/chartBar.vue"),
+    "flycalc-incomplete-data": () => import("@/components/nothingToCalculate.vue")
   },
   data() {
     return {
