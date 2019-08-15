@@ -26,6 +26,7 @@
           v-model="data.OAT"
           :class="{ warn: this.data.OAT >= 25 }"
           :error="this.data.OAT >= 25"
+          :success="this.data.OAT < 25 && this.data.OAT !== null"
           @input="change()"
         ></v-text-field>
         <v-text-field type="number" label="QNH" suffix="hPa" v-model="data.QNH" @input="change()"></v-text-field>
