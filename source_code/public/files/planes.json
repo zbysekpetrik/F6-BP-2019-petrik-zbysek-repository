@@ -186,12 +186,16 @@
                     "value": 1180,
                     "unit": "kg"
                 },
-                "BEW": {
-                    "value": 840,
+                "MLW": {
+                    "value": 1180,
                     "unit": "kg"
                 },
-                "min FLT weight": {
-                    "value": 856,
+                "MZFW": {
+                    "value": 1145,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 840,
                     "unit": "kg"
                 },
                 "BEWarm": {
@@ -210,12 +214,16 @@
                     "value": 1180,
                     "unit": "kg"
                 },
-                "BEW": {
-                    "value": 840,
+                "MLW": {
+                    "value": 1180,
                     "unit": "kg"
                 },
-                "min FLT weight": {
-                    "value": 856,
+                "MZFW": {
+                    "value": 1145,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 840,
                     "unit": "kg"
                 },
                 "BEWarm": {
@@ -234,12 +242,16 @@
                     "value": 1180,
                     "unit": "kg"
                 },
-                "BEW": {
-                    "value": 840,
+                "MLW": {
+                    "value": 1180,
                     "unit": "kg"
                 },
-                "min FLT weight": {
-                    "value": 856,
+                "MZFW": {
+                    "value": 1145,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 840,
                     "unit": "kg"
                 },
                 "BEWarm": {
@@ -258,12 +270,16 @@
                     "value": 1180,
                     "unit": "kg"
                 },
-                "BEW": {
-                    "value": 840,
+                "MLW": {
+                    "value": 1180,
                     "unit": "kg"
                 },
-                "min FLT weight": {
-                    "value": 856,
+                "MZFW": {
+                    "value": 1145,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 840,
                     "unit": "kg"
                 },
                 "BEWarm": {
