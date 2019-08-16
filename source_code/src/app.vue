@@ -1,22 +1,6 @@
 <template>
   <v-app>
-    <v-bottom-navigation
-      grow
-      :value="topNavModel[0]"
-      v-model="topNavModel[1]"
-      style="position: none;"
-    >
-      <div style="color: white !important" class="noopacity v-btn" height="56px" value="f-air">
-        <img style="width: 80px;" src="/img/icons/fair.svg" alt />
-      </div>
-      <v-btn class="noopacity" height="56px" v-on:click="planeClick" value="plane">
-        <span>{{ middleValue }}</span>
-      </v-btn>
-
-      <v-btn class="noopacity" height="56px" to="/" value="hangar">
-        <img class="kareta" style="width: 65px;" src="/img/icons/house.svg" alt />
-      </v-btn>
-    </v-bottom-navigation>
+    <flycalc-top-nav :middle-value="middleValue" @plane-click="planeClick"></flycalc-top-nav>
 
     <v-layout row justify-center>
       <v-flex xs12 sm10 md7 lg6 xl5>
@@ -27,39 +11,23 @@
         </div>
       </v-flex>
     </v-layout>
-    <v-btn v-show="false" style="z-index: 1000" @click="addToIDB()">efcecedcčtfsed</v-btn>
+
+    <v-btn v-if="false" style="z-index: 1000" @click="addToIDB()">efcecedcčtfsed</v-btn>
 
     <v-snackbar
+      :timeout="3000"
       style="margin: 20px"
-      v-model="snackBar"
+      v-model="snackBarSoon"
       color="info"
       left
       bottom
       multi-line
-      :timeout="snackBarTimeout"
     >
       Available soon ✈
-      <v-btn dark text @click="snackBar = false">Close</v-btn>
+      <v-btn dark text @click="snackBarSoon = false">Close</v-btn>
     </v-snackbar>
 
-    <v-snackbar
-      style="margin: 20px"
-      v-model="snackBariOS"
-      color="info"
-      left
-      bottom
-      multi-line
-      :timeout="0"
-    >
-      <div @click="snackBariOS = false">
-        To install the app on your iOS device in Safari:
-        tap
-        <v-img
-          style="height: 20px; width: 15px; display: inline-block;"
-          src="/img/icons/icon-share.png"
-        ></v-img>&nbsp;and then Add to Home Screen
-      </div>
-    </v-snackbar>
+    <flycalc-snackbar-ios v-if="snackBariOS" @click="snackBariOS = false"></flycalc-snackbar-ios>
 
     <div style="z-index: 20" class="tabDiv">
       <transition name="fade">
@@ -165,8 +133,8 @@
           <v-icon :class="{ cancelFab: fabModel }">mdi-plus</v-icon>
         </v-btn>
       </template>
-      <v-btn v-show="tabModel > 0" color="success" @click="print()" fab dark class="fabSize">
-        <v-icon>mdi-printer</v-icon>
+      <v-btn color="info" fab dark v-on:click="overlayInfo = true" class="fabSize">
+        <v-icon>mdi-information</v-icon>
       </v-btn>
       <v-btn
         :color="!$vuetify.theme.dark ? '#063761' : '#063761'"
@@ -177,23 +145,35 @@
       >
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
-      <v-btn color="info" fab dark v-on:click="overlayInfo = true" class="fabSize">
-        <v-icon>mdi-information</v-icon>
-      </v-btn>
+      <template v-if="tabModel > 0">
+        <v-btn color="purple" @click="save()" fab dark class="fabSize">
+          <v-icon>mdi-content-save</v-icon>
+        </v-btn>
+        <v-btn color="success" @click="print()" fab dark class="fabSize">
+          <v-icon>mdi-printer</v-icon>
+        </v-btn>
+      </template>
     </v-speed-dial>
   </v-app>
 </template>
 <script>
 import { sync } from "vuex-pathify";
-import { uuid } from 'vue-idb'
 
 export default {
   name: "App",
-  components: {},
+  components: {
+    "flycalc-top-nav": () =>
+      import(
+        /* webpackChunkName: "flycalc-top-nav" */ "@/components/topNav.vue"
+      ),
+    "flycalc-snackbar-ios": () =>
+      import(
+        /* webpackChunkName: "flycalc-snackBar-iOS" */ "@/components/snackBar_iOS.vue"
+      )
+  },
   data() {
     return {
-      snackBar: false,
-      snackBarTimeout: 6000,
+      snackBarSoon: false,
       snackBariOS: false,
       fabModel: false,
       overlayInfo: false,
@@ -224,18 +204,12 @@ export default {
     }
   },
   methods: {
-    addToIDB() {
-      this.$db.user_config
-        .add({
-          id: uuid(),
-          store_object: "test_indexedDB",
-          created_at: new Date(),
-          name: "pastelka"
-        });
-    },
     print() {
-      this.snackBar = true;
+      this.snackBarSoon = true;
       this.$refs.routerComponent.printPDF();
+    },
+    save() {
+      this.$refs.routerComponent.saveToIDB();
     },
     darkModeSwitch(darkMode) {
       this.$vuetify.theme.dark = darkMode;
@@ -252,7 +226,7 @@ export default {
     },
     calcClick: function(foo, disabled) {
       if (disabled) {
-        this.snackBar = true;
+        this.snackBarSoon = true;
         return;
       }
       if (this.$route.params.calc !== "") {
@@ -262,8 +236,7 @@ export default {
     },
     planeClick: function() {
       let foo = this.$store.get("lastPlane");
-      if(foo)
-      this.$router.push("/" + foo);
+      if (foo) this.$router.push("/" + foo);
     },
     onload() {
       if (

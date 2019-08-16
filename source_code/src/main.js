@@ -20,7 +20,7 @@ const idb = new VueIdb({
   version: 1,
   database: 'user_data',
   schemas: [
-    { user_config: 'id, store_object, created_at, name' }
+    { user_config: 'id, data, plane, username, created_at' }
   ]
 })
 

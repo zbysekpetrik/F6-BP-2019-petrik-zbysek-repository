@@ -89,7 +89,7 @@
             style="padding-top: 20px"
             v-show="(PERFData.RPM === undefined || PERFData.RPM === '') || (PERFData.OAT === undefined || PERFData.OAT === '')"
           >
-          <flycalc-incomplete-data></flycalc-incomplete-data>
+            <flycalc-incomplete-data></flycalc-incomplete-data>
           </div>
         </transition>
         <transition name="fade">
@@ -108,6 +108,7 @@
 import { sync, get, set } from "vuex-pathify";
 import FlyCalc from "@/modules/calculate.js";
 import nestedObjectAssign from "nested-object-assign";
+import { uuid } from "vue-idb";
 
 export default {
   data() {
@@ -122,13 +123,32 @@ export default {
     };
   },
   components: {
-    "flycalc-dynamic-list": () => import(/* webpackChunkName: "flycalc-dynamic-list" */"@/components/dynamicList.vue"),
-    "flycalc-tow": () => import(/* webpackChunkName: "flycalc-tow" */"@/components/tow.vue"),
-    "flycalc-rwy-condition": () => import(/* webpackChunkName: "flycalc-rwy-condition" */"@/components/rwy.vue"),
-    "flycalc-meteo-condition": () => import(/* webpackChunkName: "flycalc-meteo-condition" */"@/components/meteo.vue"),
-    "flycalc-chart-scatter": () => import(/* webpackChunkName: "flycalc-chart-scatter" */"@/components/chartScatter.vue"),
-    "flycalc-chart-bar": () => import(/* webpackChunkName: "flycalc-chart-bar" */"@/components/chartBar.vue"),
-    "flycalc-incomplete-data": () => import("@/components/nothingToCalculate.vue")
+    "flycalc-dynamic-list": () =>
+      import(
+        /* webpackChunkName: "flycalc-dynamic-list" */ "@/components/dynamicList.vue"
+      ),
+    "flycalc-tow": () =>
+      import(/* webpackChunkName: "flycalc-tow" */ "@/components/tow.vue"),
+    "flycalc-rwy-condition": () =>
+      import(
+        /* webpackChunkName: "flycalc-rwy-condition" */ "@/components/rwy.vue"
+      ),
+    "flycalc-meteo-condition": () =>
+      import(
+        /* webpackChunkName: "flycalc-meteo-condition" */ "@/components/meteo.vue"
+      ),
+    "flycalc-chart-scatter": () =>
+      import(
+        /* webpackChunkName: "flycalc-chart-scatter" */ "@/components/chartScatter.vue"
+      ),
+    "flycalc-chart-bar": () =>
+      import(
+        /* webpackChunkName: "flycalc-chart-bar" */ "@/components/chartBar.vue"
+      ),
+    "flycalc-incomplete-data": () =>
+      import(
+        /* webpackChunkName: "flycalc-incomplete-data" */ "@/components/nothingToCalculate.vue"
+      )
   },
   beforeCreate() {
     if (this.$store.state[this.$route.params.plane] === undefined) {
@@ -141,6 +161,9 @@ export default {
           LD: {}
         },
         getters: {
+          "": state => {
+            return state;
+          },
           "W&B": state => {
             return state.WaB;
           },
@@ -191,6 +214,15 @@ export default {
   methods: {
     printPDF() {
       console.log("Jdeme printovat... 💩💩");
+    },
+    saveToIDB() {
+      this.$db.user_config.add({
+        id: uuid(),
+        data: this.$store.getters[`${this.selectedPlane[0]}/`],
+        plane: this.selectedPlane[0],
+        username: "",
+        created_at: new Date()
+      });
     },
     loadConfig() {
       this.planeInfo = this.json[this.selectedPlane[1]][this.selectedPlane[0]];
