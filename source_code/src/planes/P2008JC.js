@@ -1,6 +1,7 @@
 import FlyCalc from "@/modules/calculate.js"
 import { GT, hoffmann } from "@/assets/P2008JC_PERF_table.js"
 import nestedObjectAssign from "nested-object-assign";
+import jsPDF from "jspdf";
 
 let GTconfig = {
     WaB: {
@@ -476,7 +477,70 @@ hoffmannConfig.TO.TOD = function (totalWeight, AD_ELEV, OAT, QNH) {
     return TOD;
 }
 
+import { exportRWY, exportMeteo, renderTemplate } from "@/modules/printPDF.js"
+
+let printPDF = (data, plane, BEW) => {
+    console.log(plane)
+    let newPage = false;
+    let doc = new jsPDF();
+    let d = new Date();
+    doc.setDocumentProperties({
+        title: plane + "-" + FlyCalc.dateToString(d)
+    });
+    doc = renderTemplate(doc, d, plane, newPage);
+    let y = 45;
+    if (true) {
+        if (newPage) {
+            doc = renderTemplate(doc, d, plane, true);
+        } else {
+            newPage = true;
+        }
+        doc.setTextColor("#000000");
+        doc.setFontSize(16);
+        doc.setFontType("bold");
+        doc.text("Weight and balance", 15, y);
+        doc.setFontSize(11);
+        y += 8;
+        doc.setFontType("bold");
+        doc.text("Weight", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(
+            `Pilot and passenger: ${data.WaB.componentsArray[0]} kg`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(`Fuel: ${data.WaB.componentsArray[1] * 0.72} L`, 25, y);
+        y += 8;
+        doc.text(`Baggage: ${data.WaB.componentsArray[2]} kg`, 25, y);
+        y += 8;
+        y += 2;
+        doc.setFontType("bold");
+        doc.text("Summary", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(
+            `BEW: ${BEW} kg`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(`TOW: ${data.WaB.results.TOW} kg`, 25, y);
+        y += 8;
+        doc.text(`%MAC: ${data.WaB.results.MAC} %`, 25, y);
+        y += 8;
+        doc.text(`CG: ${data.WaB.results.CG} m`, 25, y);
+        y += 16;
+        if(data.WaB.chart)
+        doc.addImage(data.WaB.chart, "PNG", 40, y, 130, 65);
+        y = 45;
+    }
+    doc.save(plane + "-" + FlyCalc.dateToString(d) + ".pdf");
+}
+
 export default {
     GT: GTconfig,
-    hoffmann: hoffmannConfig
+    hoffmann: hoffmannConfig,
+    printPDF: printPDF
 }

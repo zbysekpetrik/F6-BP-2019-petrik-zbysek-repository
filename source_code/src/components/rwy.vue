@@ -11,7 +11,16 @@
           :items="Object.keys(RWY)"
           @change="selectedRWY()"
           label="RWY Designator"
-        ></v-combobox>
+          :search-input.sync="search"
+        >
+          <template v-slot:no-data>
+            <v-list-item>
+              <v-list-item-content>
+                No RWY matching.
+              </v-list-item-content>
+            </v-list-item>
+          </template>
+        </v-combobox>
 
         <template v-if="takeoff !== undefined">
           <v-text-field type="number" label="TODA" suffix="m" @input="change()" v-model="data.TODA"></v-text-field>
@@ -136,7 +145,11 @@ export default {
       if (
         (+this.data.THR_ELEV || +this.data.THR_ELEV == 0) &&
         (+this.data.DER_ELEV || +this.data.THR_ELEV == 0) &&
-        (+this.takeoff !== undefined ? this.data.TORA : this.data.LDA || +this.takeoff !== undefined ? this.data.TORA : this.data.LDA == 0)
+        (+this.takeoff !== undefined
+          ? this.data.TORA
+          : this.data.LDA || +this.takeoff !== undefined
+          ? this.data.TORA
+          : this.data.LDA == 0)
       ) {
         this.data.slope = this.RWY_SLOPE(
           this.data.DER_ELEV,

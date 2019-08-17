@@ -105,7 +105,7 @@ export default {
       imperialUnits: ["lb", "ft", "inch"],
       metricUnits: ["kg", "m", "cm"],
       doNotDisplay: ["BEWarm", "__ob__"],
-      DB: null,
+      DB: [],
       snackBarRemove: false,
       snackBarLoadSuccess: false,
       successText: "",

@@ -5,7 +5,6 @@
         <h5>Weight</h5>
       </v-card-title>
       <v-card-text>
-        <v-form>
           <v-text-field
             :rules="totalRule"
             type="number"
@@ -14,7 +13,6 @@
             v-model="data.TOW"
             @input="change()"
           ></v-text-field>
-        </v-form>
       </v-card-text>
     </v-card>
   </div>

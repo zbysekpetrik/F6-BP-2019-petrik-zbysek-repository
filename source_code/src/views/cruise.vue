@@ -108,11 +108,13 @@
 import { sync, get, set } from "vuex-pathify";
 import FlyCalc from "@/modules/calculate.js";
 import nestedObjectAssign from "nested-object-assign";
-import { uuid } from "vue-idb";
+import { calcMixin } from "@/modules/general.js";
 
 export default {
+  mixins: [calcMixin],
   data() {
     return {
+      printPDFfunction: null,
       planeInfo: null,
       ROCData: {},
       PERFData: {},
@@ -122,124 +124,12 @@ export default {
         `MTOW: ${this.planeInfo.weight.MTOW.value} ${this.planeInfo.weight.MTOW.unit}`
     };
   },
-  components: {
-    "flycalc-dynamic-list": () =>
-      import(
-        /* webpackChunkName: "flycalc-dynamic-list" */ "@/components/dynamicList.vue"
-      ),
-    "flycalc-tow": () =>
-      import(/* webpackChunkName: "flycalc-tow" */ "@/components/tow.vue"),
-    "flycalc-rwy-condition": () =>
-      import(
-        /* webpackChunkName: "flycalc-rwy-condition" */ "@/components/rwy.vue"
-      ),
-    "flycalc-meteo-condition": () =>
-      import(
-        /* webpackChunkName: "flycalc-meteo-condition" */ "@/components/meteo.vue"
-      ),
-    "flycalc-chart-scatter": () =>
-      import(
-        /* webpackChunkName: "flycalc-chart-scatter" */ "@/components/chartScatter.vue"
-      ),
-    "flycalc-chart-bar": () =>
-      import(
-        /* webpackChunkName: "flycalc-chart-bar" */ "@/components/chartBar.vue"
-      ),
-    "flycalc-incomplete-data": () =>
-      import(
-        /* webpackChunkName: "flycalc-incomplete-data" */ "@/components/nothingToCalculate.vue"
-      )
-  },
-  beforeCreate() {
-    if (this.$store.state[this.$route.params.plane] === undefined) {
-      this.$store.registerModule(this.$route.params.plane, {
-        namespaced: true,
-        state: {
-          WaB: { componentsArray: [], results: {} },
-          TO: {},
-          cruise: { PERF: {}, ROC: {} },
-          LD: {}
-        },
-        getters: {
-          "": state => {
-            return state;
-          },
-          "W&B": state => {
-            return state.WaB;
-          },
-          "W&B/componentsArray": state => {
-            return state.WaB.componentsArray;
-          },
-          TO: state => {
-            return state.TO;
-          },
-          LD: state => {
-            return state.LD;
-          },
-          "cruise/PERF": state => {
-            return state.cruise.PERF;
-          },
-          "cruise/ROC": state => {
-            return state.cruise.ROC;
-          }
-        },
-        mutations: {
-          [`W&B/results`](state, payload) {
-            state.WaB.results = payload;
-          },
-          [`W&B/componentsArray`](state, payload) {
-            state.WaB.componentsArray = payload;
-          },
-          [`TO`](state, payload) {
-            state.TO = payload;
-          },
-          [`LD`](state, payload) {
-            state.LD = payload;
-          },
-          [`cruise/PERF`](state, payload) {
-            state.cruise.PERF = payload;
-          },
-          [`cruise/ROC`](state, payload) {
-            state.cruise.ROC = payload;
-          }
-        }
-      });
-    }
-  },
   created() {
     this.loadConfig();
     this.ROCData = nestedObjectAssign({}, this.ROC.input);
     this.PERFData = nestedObjectAssign({}, this.PERF.input);
   },
   methods: {
-    printPDF() {
-      console.log("Jdeme printovat... 💩💩");
-    },
-    saveToIDB() {
-      this.$db.user_config.add({
-        id: uuid(),
-        data: this.$store.getters[`${this.selectedPlane[0]}/`],
-        plane: this.selectedPlane[0],
-        username: "",
-        created_at: new Date()
-      });
-    },
-    loadConfig() {
-      this.planeInfo = this.json[this.selectedPlane[1]][this.selectedPlane[0]];
-      import(`@/planes/${this.planeInfo.plane}.js`).then(module => {
-        this.plane = module.default;
-        if (Object.keys(this.plane).includes(this.planeInfo.config)) {
-          this.plane = this.plane[this.planeInfo.config];
-        }
-        let temp = [];
-        temp.push(!("WaB" in this.plane));
-        temp.push(!("TO" in this.plane));
-        temp.push(!("cruise" in this.plane));
-        temp.push(!("LD" in this.plane));
-        this.bottomNavDisabled = temp;
-        return;
-      });
-    },
     PERFmutate(payload) {
       this.$store.commit(`${this.selectedPlane[0]}/cruise/PERF`, payload);
     },
