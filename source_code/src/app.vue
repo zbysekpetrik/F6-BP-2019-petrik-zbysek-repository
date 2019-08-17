@@ -205,7 +205,6 @@ export default {
   },
   methods: {
     print() {
-      this.snackBarSoon = true;
       this.$refs.routerComponent.printPDF();
     },
     save() {
