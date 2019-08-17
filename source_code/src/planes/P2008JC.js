@@ -480,7 +480,7 @@ hoffmannConfig.TO.TOD = function (totalWeight, AD_ELEV, OAT, QNH) {
 import { exportRWY, exportMeteo, renderTemplate } from "@/modules/printPDF.js"
 
 let printPDF = (data, plane, BEW) => {
-    console.log(plane)
+    let temp
     let newPage = false;
     let doc = new jsPDF();
     let d = new Date();
@@ -489,7 +489,7 @@ let printPDF = (data, plane, BEW) => {
     });
     doc = renderTemplate(doc, d, plane, newPage);
     let y = 45;
-    if (true) {
+    if (Object.keys(data.WaB.results).length > 0) {
         if (newPage) {
             doc = renderTemplate(doc, d, plane, true);
         } else {
@@ -532,8 +532,208 @@ let printPDF = (data, plane, BEW) => {
         y += 8;
         doc.text(`CG: ${data.WaB.results.CG} m`, 25, y);
         y += 16;
-        if(data.WaB.chart)
-        doc.addImage(data.WaB.chart, "PNG", 40, y, 130, 65);
+        if (data.WaB.chart)
+            doc.addImage(data.WaB.chart, "PNG", 40, y, 130, 65);
+        y = 45;
+    }
+    if (Object.keys(data.TO.results).length > 0) {
+        if (newPage) {
+            doc = renderTemplate(doc, d, plane, true);
+        } else {
+            newPage = true;
+        }
+        doc.setTextColor("#000000");
+        doc.setFontSize(16);
+        doc.setFontType("bold");
+        doc.text("Take-off performance", 15, y);
+        doc.setFontSize(11);
+        y += 8;
+        doc.setFontType("bold");
+        doc.text("Weight", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(`TOW: ${data.TO.weight.TOW} kg`, 25, y);
+        y += 8;
+        y += 2;
+        temp = exportRWY(doc, y, data.TO.rwy, "TO")
+        doc = temp[0]
+        y = temp[1]
+        temp = exportMeteo(doc, y, data.TO.meteo)
+        doc = temp[0]
+        y = temp[1]
+        doc.setFontType("bold");
+        doc.text("Summary", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(`TOR: ${data.TO.results.TOR} m`, 25, y);
+        y += 8;
+        doc.text(`TOD: ${data.TO.results.TOD} m`, 25, y);
+        y += 8;
+        doc.text(
+            `Take-off rate of climb: ${data.TO.results.climb} ft/min`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(`Vy: ${data.TO.results.Vy} kt`, 25, y);
+        y = 45;
+    }
+    if (Object.keys(data.cruise.ROC.results).length > 0) {
+        if (newPage) {
+            doc = renderTemplate(doc, d, plane, true);
+        } else {
+            newPage = true;
+        }
+        doc.setTextColor("#000000");
+        doc.setFontSize(16);
+        doc.setFontType("bold");
+        doc.text("En-route rate of climb", 15, y);
+        doc.setFontSize(11);
+        y += 8;
+        doc.setFontType("bold");
+        doc.text("Weight", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(`GW: ${data.cruise.ROC.input.GW} kg`, 25, y);
+        y += 8;
+        y += 2;
+        doc.setFontType("bold");
+        doc.text("Meteo", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(
+            `Pressure altitude: ${data.cruise.ROC.input.pressureAltitude} ft`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(`OAT: ${data.cruise.ROC.input.OAT} °C`, 25, y);
+        y += 8;
+        y += 2;
+        doc.setFontType("bold");
+        doc.text("Summary", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(
+            `Rate of climb: ${data.cruise.ROC.results.ROC} ft/min`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(`Vy: ${data.cruise.ROC.results.Vy} kt`, 25, y);
+        y += 24;
+        if (data.cruise.PERF.results === {}) {
+            y = 45;
+        }
+        else {
+            newPage = false
+        }
+    }
+    if (Object.keys(data.cruise.PERF.results).length > 0) {
+        if (newPage) {
+            doc = this.renderTemplate(doc, d, this.$route.params.plane, true);
+        } else {
+            newPage = true;
+        }
+        doc.setTextColor("#000000");
+        doc.setFontSize(16);
+        doc.setFontType("bold");
+        doc.text("Cruise performance", 15, y);
+        doc.setFontSize(11);
+        y += 8;
+        doc.setFontType("bold");
+        doc.text("Weight", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(
+            `GW: ${data.cruise.PERF.input.GW} kg`,
+            25,
+            y
+        );
+        y += 8;
+        y += 2;
+        doc.setFontType("bold");
+        doc.text("Meteo", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(
+            `Pressure altitude: ${
+            data.cruise.PERF.input.pressureAltitude
+            } ft`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(`OAT: ${data.cruise.PERF.input.OAT} °C`, 25, y);
+        y += 8;
+        y += 2;
+        doc.setFontType("bold");
+        doc.text("Plane", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(
+            `Propeller RPM: ${data.cruise.PERF.input.RPM}`,
+            25,
+            y
+        );
+        y += 8;
+        y += 2;
+        doc.setFontType("bold");
+        doc.text("Summary", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(`TAS: ${data.cruise.PERF.results.KTAS} kt`, 25, y);
+        y += 8;
+        doc.text(
+            `Fuel consumption: ${
+            data.cruise.PERF.results.fuelConsumption
+            } L/h`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(
+            `Endurance: ${data.cruise.PERF.results.endurance}`,
+            25,
+            y
+        );
+        y += 8;
+        doc.text(`Range: ${data.cruise.PERF.results.range} NM`, 25, y);
+        y += 8;
+        doc.text(
+            `Specific range: ${
+            data.cruise.PERF.results.specificRange
+            } NM/L`,
+            25,
+            y
+        );
+        y = 45;
+    }
+    if (Object.keys(data.LD.results).length > 0) {
+        if (newPage) {
+            doc = renderTemplate(doc, d, plane, true);
+        } else {
+            newPage = true;
+        }
+        doc.setTextColor("#000000");
+        doc.setFontSize(16);
+        doc.setFontType("bold");
+        doc.text("Landing performance", 15, y);
+        doc.setFontSize(11);
+        y += 8;
+        temp = exportRWY(doc, y, data.LD.rwy, "LD")
+        doc = temp[0]
+        y = temp[1]
+        temp = exportMeteo(doc, y, data.LD.meteo)
+        doc = temp[0]
+        y = temp[1]
+        doc.setFontType("bold");
+        doc.text("Summary", 20, y);
+        doc.setFontType("normal");
+        y += 8;
+        doc.text(`LD: ${data.LD.results.LD} m`, 25, y);
+        y += 8;
+        doc.text(`LR: ${data.LD.results.LR} m`, 25, y);
         y = 45;
     }
     doc.save(plane + "-" + FlyCalc.dateToString(d) + ".pdf");

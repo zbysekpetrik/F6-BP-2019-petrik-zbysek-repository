@@ -35,9 +35,9 @@ export const calcMixin = {
                 namespaced: true,
                 state: {
                     WaB: { componentsArray: [], results: {}, chart: null },
-                    TO: {},
-                    cruise: { PERF: {}, ROC: {} },
-                    LD: {}
+                    TO: { results: {} },
+                    cruise: { PERF: { results: {} }, ROC: { results: {} } },
+                    LD: { results: {} }
                 },
                 getters: {
                     "": state => {
