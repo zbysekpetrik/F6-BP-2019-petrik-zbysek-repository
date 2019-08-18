@@ -11,6 +11,7 @@
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
     "jspdf": "^1.5.3",
+    "muse-ui": "^3.0.2",
     "nested-object-assign": "^1.0.3",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",

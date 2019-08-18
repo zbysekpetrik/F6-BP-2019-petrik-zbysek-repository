@@ -6,6 +6,10 @@ import store from "@/store.js";
 import planes from "@/../public/files/planes.json"
 import "@/registerServiceWorker.js";
 import VueIdb from 'vue-idb'
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
+
+Vue.use(MuseUI);
 
 Vue.prototype.json = planes;
 

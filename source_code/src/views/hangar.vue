@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bottomMargin">
     <transition name="fade"></transition>
     <v-card v-if="!true" style="margin-bottom: 10px">
       <v-card-title>
@@ -24,7 +24,7 @@
         </div>
       </v-card-text>
     </v-card>
-    <v-expansion-panels multiple accordion v-if="true" class="bottomMargin">
+    <v-expansion-panels multiple accordion v-if="!true" class="bottomMargin">
       <v-expansion-panel v-for="manu in Object.keys(json)" :key="manu.id">
         <v-expansion-panel-header>{{manu.charAt(0).toUpperCase() + manu.slice(1)}}</v-expansion-panel-header>
         <v-expansion-panel-content style="text-align:center">
@@ -40,6 +40,22 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <div v-for="manu in Object.keys(json)" :key="manu.id">
+      <mu-expansion-panel :class="{ 'darkTheme-muse': $vuetify.theme.dark}">
+        <div slot="header">{{manu.charAt(0).toUpperCase() + manu.slice(1)}}</div>
+        <div style="text-align:center">
+          <v-btn
+            style="margin: 0px 10px 20px 0px; width: 40%"
+            v-for="plane in Object.keys(json[manu])"
+            :key="plane.id"
+            v-on:click="planeClick(plane, manu)"
+            rounded
+            color="primary"
+            dark
+          >{{ plane }}</v-btn>
+        </div>
+      </mu-expansion-panel>
+    </div>
   </div>
 </template>
 
@@ -53,7 +69,7 @@ export default {
     return {
       hangar: [],
       infoModel: null,
-      autoCompleteModel: null,
+      autoCompleteModel: null
     };
   },
   methods: {
@@ -114,5 +130,10 @@ export default {
 
 .bottomMargin {
   margin-bottom: 56px;
+}
+
+.darkTheme-muse {
+  background-color: #1c1c1c;
+  color: white;
 }
 </style>

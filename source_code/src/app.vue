@@ -4,7 +4,7 @@
 
     <v-layout row justify-center>
       <v-flex xs12 sm10 md7 lg6 xl5>
-        <div style="padding: 10px 10px 10px 10px !important; z-index: 10">
+        <div style="padding: 10px 18px 10px 18px !important; z-index: 10">
           <transition name="fade">
             <router-view ref="routerComponent"></router-view>
           </transition>
@@ -122,6 +122,22 @@
         </v-card>
       </v-overlay>
     </transition>
+    <transition name="fade">
+      <v-overlay style="z-index: 100" :value="overlaySaveName">
+        <v-card style="background-color: #512DA8 !important">
+          <v-card-title style="background-color: #311B92 !important">
+            <h5>Name</h5>
+          </v-card-title>
+          <v-card-text style="padding: 20px">
+            <v-text-field v-model="saveName"></v-text-field>
+          </v-card-text>
+          <v-card-actions style="text-align: right; display: block !important">
+            <v-btn text dark @click="overlaySaveName = false">Cancel</v-btn>
+            <v-btn text dark @click="$refs.routerComponent.saveToIDB(saveName); overlaySaveName = false; saveName = ''">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-overlay>
+    </transition>
     <v-speed-dial
       style="position: fixed; bottom: 68px; right: 20px; z-index: 99"
       direction="top"
@@ -145,8 +161,11 @@
       >
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
+      <v-btn fab dark color="blue-grey lighten-1" class="fabSize" @click="snackBarSoon = true">
+        <v-icon>mdi-key</v-icon>
+      </v-btn>
       <template v-if="tabModel > 0">
-        <v-btn color="purple" @click="save()" fab dark class="fabSize">
+        <v-btn color="purple" @click="overlaySaveName = true" fab dark class="fabSize">
           <v-icon>mdi-content-save</v-icon>
         </v-btn>
         <v-btn color="success" @click="print()" fab dark class="fabSize">
@@ -178,7 +197,9 @@ export default {
       fabModel: false,
       overlayInfo: false,
       darkMode: false,
-      iPhone: false
+      iPhone: false,
+      overlaySaveName: false,
+      saveName: ""
     };
   },
   created() {
