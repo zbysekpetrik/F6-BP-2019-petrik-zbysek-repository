@@ -18,7 +18,7 @@
             </v-list-item>
           </template>
         </v-select>
-        <div v-show="data.selectedRWY === 'Custom'" style="padding-left: 10px">
+        <div v-show="data.selectedRWY === 'Custom'">
           <v-text-field
             type="number"
             :label="!customRWYmagXdes ? 'RWY designator': 'RWY heading'"
