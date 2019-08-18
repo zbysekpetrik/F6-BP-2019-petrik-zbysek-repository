@@ -40,7 +40,7 @@ let GTconfig = {
         conditions: [
             { name: "Flaps", value: "T/O" },
             { name: "Speed at lift-off", value: "48 kt" },
-            { name: "Speed over 50ft obstacle", value: "60 kt" }
+            { name: "Speed over 50ft obstacle", value: "60 kt" },
             { name: "Throttle", value: "Full forward" }
         ],
         TOR(totalWeight, AD_ELEV, OAT, QNH, surface, contamination) {
@@ -366,7 +366,7 @@ let GTconfig = {
             { name: "LW", value: "650 kg" },
             { name: "Flaps", value: "Landing" },
             { name: "Short final approach speed", value: "54 kt" },
-            { name: "Throttle", value: "idle" },
+            { name: "Throttle", value: "idle" }
         ],
         LR(AD_ELEV, OAT, QNH, surface, contamination) {
             let LR = (0.0000236965801730635 * Math.pow(OAT, 2) + 0.600216197193662 * OAT + 163.563319309058) * Math.exp(0.000037438845651908 * FlyCalc.pressureAltitude(AD_ELEV, QNH))
