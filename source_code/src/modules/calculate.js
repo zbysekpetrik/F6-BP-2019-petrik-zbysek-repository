@@ -87,7 +87,7 @@ export default {
         return foo
     },
     emptyToZero(foo) {
-        let doNotModify = ["wind"]
+        let doNotModify = ["wind", 'customRWY']
         let keys = Object.keys(foo)
         for (let i = 0; i < keys.length; i++) {
             if (!doNotModify.includes(keys[i])) {

@@ -9,6 +9,10 @@ export const exportRWY = function (doc, y, rwyData, mode) {
     y += 8;
     doc.text(`RWY: ${rwyData.selectedRWY}`, 25, y);
     y += 8;
+    if (rwyData.selectedRWY === "Custom") {
+        doc.text(`${!rwyData.customRWYmagXdes ? 'RWY designator': 'RWY heading'}: ${rwyData.customRWY}${!rwyData.customRWYmagXdes ? '': '°'}`, 25, y);
+        y += 8;
+    }
     if (mode === "TO") {
         doc.text(`TORA: ${rwyData.TORA} m`, 25, y);
         y += 8;

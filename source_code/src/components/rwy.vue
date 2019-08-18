@@ -5,22 +5,36 @@
     </v-card-title>
     <v-card-text>
       <v-form>
-        <v-combobox
+        <v-select
           type="text"
           v-model="data.selectedRWY"
-          :items="Object.keys(RWY)"
+          :items="displayRWY"
           @change="selectedRWY()"
-          label="RWY Designator"
-          :search-input.sync="search"
+          label="RWY"
         >
           <template v-slot:no-data>
             <v-list-item>
-              <v-list-item-content>
-                No RWY matching.
-              </v-list-item-content>
+              <v-list-item-content>RWY is not in database. Please select Custom RWY</v-list-item-content>
             </v-list-item>
           </template>
-        </v-combobox>
+        </v-select>
+        <div v-show="data.selectedRWY === 'Custom'" style="padding-left: 10px">
+          <v-text-field
+            type="number"
+            :label="!customRWYmagXdes ? 'RWY designator': 'RWY heading'"
+            v-mask="!customRWYmagXdes ? '##': '###'"
+            v-model="data.customRWY"
+            :rules="[customRWYerror]"
+            :suffix="!customRWYmagXdes ? '': '°'"
+            @input="customRWYchange()"
+          >
+            <v-icon
+              @click="customRWYmagXdes = !customRWYmagXdes; customRWYchange()"
+              slot="append"
+              :class="{ 'rotateArrow': customRWYmagXdes }"
+            >mdi-swap-horizontal</v-icon>
+          </v-text-field>
+        </div>
 
         <template v-if="takeoff !== undefined">
           <v-text-field type="number" label="TODA" suffix="m" @input="change()" v-model="data.TODA"></v-text-field>
@@ -39,10 +53,9 @@
         >
           <v-icon
             slot="append"
-            :color="slopeExpand ? 'primary' : undefined"
             @click="slopeExpand = !slopeExpand"
-            v-text="slopeExpand ? 'mdi-menu-up' : 'mdi-menu-down'"
-          ></v-icon>
+            :class="{ 'rotateArrow': slopeExpand }"
+          >mdi-menu-down</v-icon>
         </v-text-field>
         <div v-show="slopeExpand" style="padding-left: 10px">
           <v-text-field
@@ -86,20 +99,51 @@
 
 <script>
 import { dirname } from "path";
+import { mask } from "vue-the-mask";
+
 export default {
+  directives: {
+    mask
+  },
   props: ["takeoff", "landing", "inputData"],
   created() {
     this.data = this.inputData;
+    this.customRWY = this.inputData.customRWY;
+    this.customRWYmagXdes = this.inputData.customRWYmagXdes;
     this.selectedRWY();
+    this.customRWYchange();
   },
   data: function() {
     return {
       data: {},
       selectMenu: false,
-      slopeExpand: false
+      slopeExpand: false,
+      customRWYmagXdes: false
     };
   },
+  computed: {
+    displayRWY() {
+      let temp = Object.keys(this.RWY);
+      temp.unshift("Custom");
+      return temp;
+    },
+    customRWYerror() {
+      if (!this.data.customRWY) return false;
+      if (this.data.customRWY.length < 2 && !this.customRWYmagXdes) {
+        return "Enter RWY designator in 2 digits format";
+      } else if (this.data.customRWY.length < 3 && this.customRWYmagXdes) {
+        return "Enter RWY heading in 3 digits format";
+      } else return false;
+    }
+  },
   methods: {
+    customRWYchange() {
+      this.data.RWYdirection = this.customRWYmagXdes
+        ? this.data.customRWY
+        : this.data.customRWY * 10;
+      this.data.customRWYmagXdes = this.customRWYmagXdes;
+      this.change();
+    },
     RWY_SLOPE(DER_ELEV, THR_ELEV, distance) {
       let slope = +DER_ELEV - +THR_ELEV;
       slope /= distance / 0.305;
@@ -109,6 +153,19 @@ export default {
     },
     selectedRWY() {
       let foo = this.data.selectedRWY;
+      if (foo === "Custom") {
+        this.data.RWYdirection = "";
+        this.data.TORA = "";
+        this.data.TODA = "";
+        this.data.LDA = "";
+        this.data.THR_ELEV = "";
+        this.data.DER_ELEV = "";
+        this.data.AD_ELEV = "";
+        this.data.surface = "";
+        this.data.contamination = "";
+        this.data.slope = "";
+        return;
+      }
       if (isNaN(foo)) {
         if (this.RWY[foo] !== undefined) {
           this.data.RWYdirection = this.RWY[foo].direction;
@@ -165,7 +222,15 @@ export default {
     inputData() {
       if (this.data === this.inputData) return;
       this.data = this.inputData;
+      this.customRWY = this.inputData.customRWY;
+      this.customRWYmagXdes = this.inputData.customRWYmagXdes;
     }
   }
 };
 </script>
+
+<style>
+.rotateArrow {
+  transform: rotate(180deg);
+}
+</style>
