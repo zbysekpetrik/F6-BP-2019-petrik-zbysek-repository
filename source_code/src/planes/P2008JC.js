@@ -481,7 +481,7 @@ hoffmannConfig.TO.TOD = function (totalWeight, AD_ELEV, OAT, QNH) {
 hoffmannConfig.TO.conditions = [
     { name: "Flaps", value: "T/O" },
     { name: "Speed at lift-off", value: "50 kt" },
-    { name: "Speed over 50ft obstacle", value: "61 kt" }
+    { name: "Speed over 50ft obstacle", value: "61 kt" },
     { name: "Throttle", value: "Full forward" }
 ]
 
