@@ -40,7 +40,8 @@ let GTconfig = {
         conditions: [
             { name: "Flaps", value: "T/O" },
             { name: "Speed at lift-off", value: "48 kt" },
-            { name: "Speed over 50ft", value: "60 kt" }
+            { name: "Speed over 50ft obstacle", value: "60 kt" }
+            { name: "Throttle", value: "Full forward" }
         ],
         TOR(totalWeight, AD_ELEV, OAT, QNH, surface, contamination) {
             let TOR =
@@ -364,7 +365,8 @@ let GTconfig = {
         conditions: [
             { name: "LW", value: "650 kg" },
             { name: "Flaps", value: "Landing" },
-            { name: "Short final approach speed", value: "54 kt" }
+            { name: "Short final approach speed", value: "54 kt" },
+            { name: "Throttle", value: "idle" },
         ],
         LR(AD_ELEV, OAT, QNH, surface, contamination) {
             let LR = (0.0000236965801730635 * Math.pow(OAT, 2) + 0.600216197193662 * OAT + 163.563319309058) * Math.exp(0.000037438845651908 * FlyCalc.pressureAltitude(AD_ELEV, QNH))
@@ -476,6 +478,12 @@ hoffmannConfig.TO.TOD = function (totalWeight, AD_ELEV, OAT, QNH) {
     let TOD = ((2.92965580990723E-08 * Math.pow(totalWeight, 2) + -0.0000103820582444141 * totalWeight - -0.00199725637541149) * Math.pow(OAT, 2) + (0.0000105588277819935 * Math.pow(totalWeight, 2) - 0.00258854784247653 * totalWeight + 0.386833998337983) * OAT + (0.00125614991837811 * Math.pow(totalWeight, 2) - 0.309636247292158 * totalWeight + 46.4552360611659)) * Math.exp(0.0000864591237314215 * FlyCalc.pressureAltitude(AD_ELEV, QNH))
     return TOD;
 }
+hoffmannConfig.TO.conditions = [
+    { name: "Flaps", value: "T/O" },
+    { name: "Speed at lift-off", value: "50 kt" },
+    { name: "Speed over 50ft obstacle", value: "61 kt" }
+    { name: "Throttle", value: "Full forward" }
+]
 
 import { exportRWY, exportMeteo, renderTemplate } from "@/modules/printPDF.js"
 
