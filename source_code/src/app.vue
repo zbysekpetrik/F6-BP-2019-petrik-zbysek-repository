@@ -161,9 +161,6 @@
       >
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
-      <v-btn fab dark color="blue-grey lighten-1" class="fabSize" @click="snackBarSoon = true">
-        <v-icon>mdi-key</v-icon>
-      </v-btn>
       <template v-if="tabModel > 0">
         <v-btn color="purple" @click="overlaySaveName = true" fab dark class="fabSize">
           <v-icon>mdi-content-save</v-icon>
