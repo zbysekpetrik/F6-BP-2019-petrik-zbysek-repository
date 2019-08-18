@@ -43,17 +43,23 @@
       {{successText}}
       <v-btn dark text @click="snackBarLoadSuccess = false">Close</v-btn>
     </v-snackbar>
-    <v-card v-if="DB.length" style="margin-bottom: 56px">
+    <v-card style="margin-bottom: 56px">
       <v-card-title>
         <h5>Load saved configuration</h5>
       </v-card-title>
       <v-card-text>
-        <v-list two-line>
+        <v-list v-if="DB.length" two-line>
           <v-list-item-group>
             <div v-for="saved in DB" :key="saved.id">
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title v-text="saved.plane"></v-list-item-title>
+                  <template v-if="saved.username !== ''">
+                    <v-list-item-title v-text="saved.username"></v-list-item-title>
+                    <v-list-item-subtitle class="text--primary" v-text="saved.plane"></v-list-item-subtitle>
+                  </template>
+                  <template v-else>
+                    <v-list-item-title v-text="saved.plane"></v-list-item-title>
+                  </template>
                   <v-list-item-subtitle
                     class="text--primary"
                     v-text="FlyCalc.dateToString(saved.created_at)"
@@ -72,9 +78,9 @@
             </div>
           </v-list-item-group>
         </v-list>
+        <v-alert v-else type="info">No data available</v-alert>
       </v-card-text>
     </v-card>
-    <div v-else style="margin-bottom: 46px"></div>
   </div>
 </template>
 
@@ -141,7 +147,7 @@ export default {
         .delete()
         .then(function(deleteCount) {
           self.successText = "plane configuration deleted successfully";
-          self.snackBarLoadSuccess = true
+          self.snackBarLoadSuccess = true;
           self.loadDB();
         });
     },
@@ -155,14 +161,14 @@ export default {
         .then(data => {
           self.successText = "plane configuration loaded successfully";
           self.snackBarLoadSuccess = true;
-          if (this.$store.state[data[0].plane] === undefined) {
-            this.$store.registerModule(data[0].plane, {
+          if (this.$store.state[this.$route.params.plane] === undefined) {
+            this.$store.registerModule(this.$route.params.plane, {
               namespaced: true,
               state: {
-                WaB: { componentsArray: [], results: {} },
-                TO: {},
-                cruise: { PERF: {}, ROC: {} },
-                LD: {}
+                WaB: { componentsArray: [], results: {}, chart: null },
+                TO: { results: {} },
+                cruise: { PERF: { results: {} }, ROC: { results: {} } },
+                LD: { results: {} }
               },
               getters: {
                 "": state => {
@@ -173,6 +179,9 @@ export default {
                 },
                 "W&B/componentsArray": state => {
                   return state.WaB.componentsArray;
+                },
+                "W&B/chart": state => {
+                  return state.WaB.chart;
                 },
                 TO: state => {
                   return state.TO;
@@ -193,6 +202,9 @@ export default {
                 },
                 [`W&B/componentsArray`](state, payload) {
                   state.WaB.componentsArray = payload;
+                },
+                [`W&B/chart`](state, payload) {
+                  state.WaB.chart = payload;
                 },
                 [`TO`](state, payload) {
                   state.TO = payload;

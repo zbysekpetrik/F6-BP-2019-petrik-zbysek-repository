@@ -99,12 +99,12 @@ export const calcMixin = {
                 this.planeInfo.weight.BEW.value
             );
         },
-        saveToIDB() {
+        saveToIDB(saveName) {
             this.$db.user_config.add({
                 id: uuid(),
                 data: this.$store.getters[`${this.selectedPlane[0]}/`],
                 plane: this.selectedPlane[0],
-                username: "",
+                username: saveName,
                 created_at: new Date()
             });
         },
