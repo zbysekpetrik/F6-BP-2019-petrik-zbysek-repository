@@ -231,7 +231,7 @@ export default {
     darkModeSwitch(darkMode) {
       this.$vuetify.theme.dark = darkMode;
       let metaThemeColor = document.querySelector("meta[name=theme-color]");
-      metaThemeColor.setAttribute("content", darkMode ? "#1c1c1e" : "#FFFFFF");
+      metaThemeColor.setAttribute("content", darkMode ? "#1c1c1e" : "#063761");
       metaThemeColor = document.querySelector(
         "meta[name=apple-mobile-web-app-status-bar-style]"
       );
