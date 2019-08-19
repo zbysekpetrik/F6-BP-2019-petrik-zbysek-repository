@@ -27,6 +27,7 @@
             :chart-data="chartData.data"
             :chart-labels="chartData.labels"
             :chart-colors="chartData.colors"
+            :color-mode="$vuetify.theme.dark"
             v-show="chartData.show"
           ></flycalc-chart-bar>
         </transition>

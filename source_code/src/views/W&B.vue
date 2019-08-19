@@ -35,6 +35,7 @@
           <flycalc-chart-scatter
             ref="chartComponent"
             style="margin-top: 16px"
+            :color-mode="$vuetify.theme.dark"
             :chart-data="[computedCG.chartData, envelope]"
           ></flycalc-chart-scatter>
           <flycalc-dynamic-list :items="summary"></flycalc-dynamic-list>
