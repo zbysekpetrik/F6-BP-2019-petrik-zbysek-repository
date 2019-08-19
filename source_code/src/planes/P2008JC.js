@@ -131,8 +131,8 @@ let GTconfig = {
                 headWind,
                 surface, contamination
             );
-            if (this.slope > 0) {
-                corrected *= 1 + 0.07 * slope;
+            if (slope > 0) {
+                corrected *= (1 + 0.07 * slope);
             }
             return corrected;
         },
