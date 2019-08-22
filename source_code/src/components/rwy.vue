@@ -25,6 +25,7 @@
             v-mask="!customRWYmagXdes ? '##': '###'"
             v-model="data.customRWY"
             :rules="[customRWYerror]"
+            :class="{warn: customRWYerror}"
             :suffix="!customRWYmagXdes ? '': '°'"
             @input="customRWYchange()"
           >
@@ -225,5 +226,23 @@ export default {
 <style>
 .rotateArrow {
   transform: rotate(180deg);
+}
+
+.warn .error--text {
+  color: #fb8c00 !important;
+  caret-color: #fb8c00 !important;
+}
+.warn.error--text {
+  color: #fb8c00 !important;
+  caret-color: #fb8c00 !important;
+}
+
+.err .error--text {
+  color: #ff5252 !important;
+  caret-color: #ff5252 !important;
+}
+.err.error--text {
+  color: #ff5252 !important;
+  caret-color: #ff5252 !important;
 }
 </style>
