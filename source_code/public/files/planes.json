@@ -100,18 +100,20 @@
             "plane": "P92JS",
             "config": "default",
             "img": "/img/planes/P92JS.jpg",
-            "info": {},
+            "info": {
+                "Serial number": "071"
+            },
             "weight": {
                 "MTOW": {
                     "value": 600,
                     "unit": "kg"
                 },
                 "BEW": {
-                    "value": 362,
+                    "value": 362.4,
                     "unit": "kg"
                 },
                 "BEWarm": {
-                    "value": 1.82,
+                    "value": 1.811,
                     "unit": "m"
                 }
             }
@@ -120,18 +122,20 @@
             "plane": "P92JS",
             "config": "default",
             "img": "/img/planes/P92JS.jpg",
-            "info": {},
+            "info": {
+                "Serial number": "150"
+            },
             "weight": {
                 "MTOW": {
                     "value": 600,
                     "unit": "kg"
                 },
                 "BEW": {
-                    "value": 362,
+                    "value": 373.5,
                     "unit": "kg"
                 },
                 "BEWarm": {
-                    "value": 1.82,
+                    "value": 1.777,
                     "unit": "m"
                 }
             }
@@ -293,8 +297,7 @@
             "config": "default",
             "img": "/img/planes/P2002JF.jpg",
             "info": {
-                "MTOW": "580 kg",
-                "BEW": "390 kg"
+                "Serial number": "173"
             },
             "weight": {
                 "MTOW": {
@@ -315,7 +318,9 @@
             "plane": "P92JS",
             "config": "default",
             "img": "/img/planes/P92JS.jpg",
-            "info": {},
+            "info": {
+                "Serial number": "111"
+            },
             "weight": {
                 "MTOW": {
                     "value": 600,
@@ -326,7 +331,7 @@
                     "unit": "kg"
                 },
                 "BEWarm": {
-                    "value": 1.788,
+                    "value": 1.769,
                     "unit": "m"
                 }
             }
@@ -346,24 +351,29 @@
         "OK-CDI": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "info": {
+                "Serial number": "152-82810"
+            }
         },
         "OK-HKC": {
             "plane": "150",
             "config": "default",
             "img": "/img/planes/C150.jpg",
-            "info": {},
+            "info": {
+                "Serial number": "1422"
+            },
             "weight": {
                 "MTOW": {
                     "value": 1600,
                     "unit": "lb"
                 },
                 "BEW": {
-                    "value": 1129.6,
+                    "value": 1116,
                     "unit": "lb"
                 },
                 "BEWarm": {
-                    "value": 33.989,
+                    "value": 32.8,
                     "unit": "inch"
                 }
             }
@@ -371,7 +381,24 @@
         "OK-TWY": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "info": {
+                "Serial number": "15279912"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                },
+                "BEW": {
+                    "value": 1170.63,
+                    "unit": "lb"
+                },
+                "BEWarm": {
+                    "value": 30.26,
+                    "unit": "inch"
+                }
+            }
         },
         "OK-SCT": {
             "plane": "152",
@@ -381,7 +408,24 @@
         "OK-GTN": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "info": {
+                "Serial number": "15282148"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                },
+                "BEW": {
+                    "value": 541,
+                    "unit": "lb"
+                },
+                "BEWarm": {
+                    "value": 30,
+                    "unit": "inch"
+                }
+            }
         },
         "OK-RMI": {
             "plane": "152",
@@ -391,7 +435,28 @@
         "OK-UTC": {
             "plane": "172",
             "config": "default",
-            "img": "/img/planes/C172.jpg"
+            "img": "/img/planes/C172.jpg",
+            "info": {
+                "Serial number": "172S10085"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 2550,
+                    "unit": "lb"
+                },
+                "Utility MTOW": {
+                    "value": 2550,
+                    "unit": "lb"
+                },
+                "BEW": {
+                    "value": 1724.01,
+                    "unit": "lb"
+                },
+                "BEWarm": {
+                    "value": 38.11,
+                    "unit": "inch"
+                }
+            }
         },
         "OK-BKN": {
             "plane": "152",
