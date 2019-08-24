@@ -19,7 +19,14 @@
             suffix="ft"
             v-model="ROCData.pressureAltitude"
           ></v-text-field>
-          <v-text-field type="number" label="OAT" suffix="°C" v-model="ROCData.OAT"></v-text-field>
+          <v-text-field
+            type="number"
+            label="OAT"
+            :hint="'ISA ' + Math.round(ISA(ROCData.pressureAltitude)) + '°C'"
+            persistent-hint
+            suffix="°C"
+            v-model="ROCData.OAT"
+          ></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-title style="padding-bottom: 0px">
@@ -143,7 +150,7 @@ export default {
         tempArray.push({ name: "Rate of climb", value: foo.ROC + " ft/min" });
       }
       if (foo.Vy) {
-        tempArray.push({ name: "Vy", value: foo.Vy + " kt" });
+        tempArray.push({ name: "Vy", value: foo.Vy + " KIAS" });
       }
       return tempArray;
     },
@@ -186,7 +193,7 @@ export default {
         this.selectedPlane[0]
       );
       if (foo.KTAS) {
-        tempArray.push({ name: "TAS", value: foo.KTAS + " kt" });
+        tempArray.push({ name: "Speed", value: foo.KTAS + " KTAS" });
       }
       if (foo.fuelConsumption) {
         tempArray.push({
