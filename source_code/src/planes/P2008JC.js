@@ -519,7 +519,7 @@ let printPDF = (data, plane, BEW) => {
             y
         );
         y += 8;
-        doc.text(`Fuel: ${data.WaB.componentsArray[1] * 0.72} L`, 25, y);
+        doc.text(`Fuel: ${data.WaB.componentsArray[1]} L`, 25, y);
         y += 8;
         doc.text(`Baggage: ${data.WaB.componentsArray[2]} kg`, 25, y);
         y += 8;
