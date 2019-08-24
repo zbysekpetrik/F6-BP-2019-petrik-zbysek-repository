@@ -126,7 +126,7 @@
       <v-overlay style="z-index: 100" :value="overlaySaveName">
         <v-card style="background-color: #512DA8 !important">
           <v-card-title style="background-color: #311B92 !important">
-            <h5>Name</h5>
+            <h5>Preset name</h5>
           </v-card-title>
           <v-card-text style="padding: 20px">
             <v-text-field v-model="saveName"></v-text-field>

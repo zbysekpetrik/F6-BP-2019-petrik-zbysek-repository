@@ -45,7 +45,7 @@
     </v-snackbar>
     <v-card style="margin-bottom: 56px">
       <v-card-title>
-        <h5>Load saved configuration</h5>
+        <h5>Saved presets</h5>
       </v-card-title>
       <v-card-text>
         <v-list v-if="DB.length" two-line>
