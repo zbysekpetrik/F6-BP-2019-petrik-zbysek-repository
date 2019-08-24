@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom: 56px">
-    <flycalc-tow :total-rule="[TOWvalidation]" :input-data="weightData" @change="weightChange"></flycalc-tow>
+    <flycalc-tow :tow="planeInfo.weight.MTOW.value" :bew="planeInfo.weight.BEW.value" :input-data="weightData" @change="weightChange"></flycalc-tow>
     <flycalc-rwy-condition takeoff :input-data="rwyData" @change="rwyChange"></flycalc-rwy-condition>
     <flycalc-meteo-condition
       :input-data="meteoData"
@@ -47,10 +47,7 @@ export default {
     return {
       printPDFfunction: null,
       planeInfo: null,
-      plane: null,
-      TOWvalidation: v =>
-        v <= this.planeInfo.weight.MTOW.value ||
-        `MTOW: ${this.planeInfo.weight.MTOW.value} ${this.planeInfo.weight.MTOW.unit}`
+      plane: null
     };
   },
   created() {
