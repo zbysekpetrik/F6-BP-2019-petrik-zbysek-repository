@@ -11,14 +11,14 @@
     </v-btn>
 
     <v-btn class="noopacity" height="56px" to="/" value="hangar">
-      <img class="kareta" style="width: 65px;" src="/img/icons/house.svg" alt />
+      <img class="kareta" style="width: 65px;" :src="back ? '/img/icons/house-back.svg' : '/img/icons/house.svg'" alt />
     </v-btn>
   </v-bottom-navigation>
 </template>
 
 <script>
 export default {
-    props: ['middleValue'],
+    props: ['middleValue', 'back'],
     methods: {
       planeClick() {
         this.$emit("plane-click")

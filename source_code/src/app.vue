@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <flycalc-top-nav :middle-value="middleValue" @plane-click="planeClick"></flycalc-top-nav>
+    <flycalc-top-nav :middle-value="middleValue" :back="tabShow" @plane-click="planeClick"></flycalc-top-nav>
 
     <v-layout row justify-center>
       <v-flex xs12 sm10 md7 lg6 xl5>
@@ -153,7 +153,7 @@
         <v-icon>mdi-information</v-icon>
       </v-btn>
       <v-btn
-        :color="!$vuetify.theme.dark ? '#063761' : '#063761'"
+        color="#063761"
         v-on:click="darkMode = !darkMode"
         fab
         dark
