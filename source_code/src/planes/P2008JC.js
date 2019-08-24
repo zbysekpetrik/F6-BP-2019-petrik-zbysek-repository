@@ -384,7 +384,7 @@ let GTconfig = {
                 case 'Mud':
                     rwyConditions += 0.30
                     break
-                case 'Snow ( up to 5 cm )':
+                case 'Snow (up to 5 cm)':
                     rwyConditions += 0.25
                     break
                 case 'Slush':
@@ -464,7 +464,7 @@ hoffmannConfig.TO.TOR = function (totalWeight, AD_ELEV, OAT, QNH, surface, conta
         case 'Mud':
             rwyConditions += 0.30
             break
-        case 'Snow ( up to 5 cm )':
+        case 'Snow (up to 5 cm)':
             rwyConditions += 0.25
             break
         case 'Slush':

@@ -82,7 +82,7 @@
           v-model="data.surface"
         ></v-select>
         <v-select
-          :items="['Dry', 'Slippery / Wet', 'Mud', 'Snow ( up to 5 cm )', 'Slush']"
+          :items="['Dry', 'Slippery / Wet', 'Mud', 'Snow (up to 5 cm)', 'Slush']"
           label="RWY Condition"
           @change="change()"
           v-model="data.contamination"
@@ -124,9 +124,9 @@ export default {
     customRWYerror() {
       if (!this.data.customRWY) return false;
       if (this.data.customRWY.length < 2 && !this.customRWYmagXdes) {
-        return "Enter RWY designator in 2 digits format";
+        return "Enter RWY designator in 2-digit format";
       } else if (this.data.customRWY.length < 3 && this.customRWYmagXdes) {
-        return "Enter RWY heading in 3 digits format";
+        return "Enter RWY heading in 3-digit format";
       } else return false;
     }
   },
