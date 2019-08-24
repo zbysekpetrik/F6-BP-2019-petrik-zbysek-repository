@@ -120,7 +120,7 @@ export default {
         });
       }
       if (foo.Vy) {
-        tempArray.push({ name: "Vy", value: foo.Vy + " kt" });
+        tempArray.push({ name: "Vy", value: foo.Vy + " KIAS" });
       }
       return tempArray;
     },

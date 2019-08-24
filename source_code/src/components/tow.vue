@@ -7,7 +7,6 @@
       <v-card-text>
         <v-text-field
           :rules="[validation]"
-          :success="success"
           type="number"
           label="TOW"
           suffix="kg"
