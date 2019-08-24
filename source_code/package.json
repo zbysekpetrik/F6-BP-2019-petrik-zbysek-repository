@@ -2,11 +2,12 @@
   "name": "FlyCalc",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://zbysekpetrik.github.io/F6-BP-2019-petrik-zbysek-repository/",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "chart.js": "^2.8.0",
@@ -32,6 +33,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "gh-pages": "^2.1.1",
     "lint-staged": "^8.1.5",
     "sass": "^1.22.10",
     "sass-loader": "^7.3.1",
