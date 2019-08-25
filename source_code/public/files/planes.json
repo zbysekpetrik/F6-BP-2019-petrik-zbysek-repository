@@ -1,5 +1,93 @@
 {
     "tecnam": {
+        "OK-GPS": {
+            "plane": "P2002JF",
+            "config": "default",
+            "img": "/img/planes/P2002JF.jpg",
+            "info": {
+                "Serial number": "173"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 580,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 390,
+                    "unit": "kg"
+                },
+                "BEWarm": {
+                    "value": 1.731,
+                    "unit": "m"
+                }
+            }
+        },
+        "OK-HDG": {
+            "plane": "P92JS",
+            "config": "default",
+            "img": "/img/planes/P92JS.jpg",
+            "info": {
+                "Serial number": "111"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 600,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 372,
+                    "unit": "kg"
+                },
+                "BEWarm": {
+                    "value": 1.769,
+                    "unit": "m"
+                }
+            }
+        },
+        "OK-VOR": {
+            "plane": "P92JS",
+            "config": "default",
+            "img": "/img/planes/P92JS.jpg",
+            "info": {
+                "Serial number": "071"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 600,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 362.4,
+                    "unit": "kg"
+                },
+                "BEWarm": {
+                    "value": 1.811,
+                    "unit": "m"
+                }
+            }
+        },
+        "OK-LLZ": {
+            "plane": "P92JS",
+            "config": "default",
+            "img": "/img/planes/P92JS.jpg",
+            "info": {
+                "Serial number": "150"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 600,
+                    "unit": "kg"
+                },
+                "BEW": {
+                    "value": 373.5,
+                    "unit": "kg"
+                },
+                "BEWarm": {
+                    "value": 1.777,
+                    "unit": "m"
+                }
+            }
+        },
         "OK-DME": {
             "plane": "P2008JC",
             "config": "GT",
@@ -92,50 +180,6 @@
                 },
                 "BEWarm": {
                     "value": 1.84154,
-                    "unit": "m"
-                }
-            }
-        },
-        "OK-VOR": {
-            "plane": "P92JS",
-            "config": "default",
-            "img": "/img/planes/P92JS.jpg",
-            "info": {
-                "Serial number": "071"
-            },
-            "weight": {
-                "MTOW": {
-                    "value": 600,
-                    "unit": "kg"
-                },
-                "BEW": {
-                    "value": 362.4,
-                    "unit": "kg"
-                },
-                "BEWarm": {
-                    "value": 1.811,
-                    "unit": "m"
-                }
-            }
-        },
-        "OK-LLZ": {
-            "plane": "P92JS",
-            "config": "default",
-            "img": "/img/planes/P92JS.jpg",
-            "info": {
-                "Serial number": "150"
-            },
-            "weight": {
-                "MTOW": {
-                    "value": 600,
-                    "unit": "kg"
-                },
-                "BEW": {
-                    "value": 373.5,
-                    "unit": "kg"
-                },
-                "BEWarm": {
-                    "value": 1.777,
                     "unit": "m"
                 }
             }
@@ -291,62 +335,42 @@
                     "unit": "m"
                 }
             }
-        },
-        "OK-GPS": {
-            "plane": "P2002JF",
-            "config": "default",
-            "img": "/img/planes/P2002JF.jpg",
-            "info": {
-                "Serial number": "173"
-            },
-            "weight": {
-                "MTOW": {
-                    "value": 580,
-                    "unit": "kg"
-                },
-                "BEW": {
-                    "value": 390,
-                    "unit": "kg"
-                },
-                "BEWarm": {
-                    "value": 1.731,
-                    "unit": "m"
-                }
-            }
-        },
-        "OK-HDG": {
-            "plane": "P92JS",
-            "config": "default",
-            "img": "/img/planes/P92JS.jpg",
-            "info": {
-                "Serial number": "111"
-            },
-            "weight": {
-                "MTOW": {
-                    "value": 600,
-                    "unit": "kg"
-                },
-                "BEW": {
-                    "value": 372,
-                    "unit": "kg"
-                },
-                "BEWarm": {
-                    "value": 1.769,
-                    "unit": "m"
-                }
-            }
         }
     },
     "cessna": {
+        "OK-FEW": {
+            "plane": "152",
+            "config": "default",
+            "img": "/img/planes/C150.jpg",
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                }
+            }
+        },
         "OK-ADF": {
             "plane": "150",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "info": {},
+            "weight": {
+                "MTOW": {
+                    "value": 1600,
+                    "unit": "lb"
+                }
+            }
         },
         "OK-BCN": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                }
+            }
         },
         "OK-CDI": {
             "plane": "152",
@@ -354,6 +378,12 @@
             "img": "/img/planes/C150.jpg",
             "info": {
                 "Serial number": "152-82810"
+            },
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                }
             }
         },
         "OK-HKC": {
@@ -403,7 +433,13 @@
         "OK-SCT": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                }
+            }
         },
         "OK-GTN": {
             "plane": "152",
@@ -430,7 +466,13 @@
         "OK-RMI": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                }
+            }
         },
         "OK-UTC": {
             "plane": "172",
@@ -461,22 +503,35 @@
         "OK-BKN": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                }
+            }
         },
         "OK-TAF": {
             "plane": "150",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "weight": {
+                "MTOW": {
+                    "value": 1600,
+                    "unit": "lb"
+                }
+            }
         },
         "OK-VIS": {
             "plane": "152",
             "config": "default",
-            "img": "/img/planes/C150.jpg"
-        },
-        "OK-FEW": {
-            "plane": "152",
-            "config": "default",
-            "img": "/img/planes/C150.jpg"
+            "img": "/img/planes/C150.jpg",
+            "weight": {
+                "MTOW": {
+                    "value": 1670,
+                    "unit": "lb"
+                }
+            }
         }
     },
     "piper": {
@@ -507,7 +562,26 @@
         "OK-KKW": {
             "plane": "PA-28",
             "config": "default",
-            "img": "/img/planes/PA-28.jpg"
+            "img": "/img/planes/PA-28.jpg",
+            "info": {},
+            "weight": {
+                "MTOW": {
+                    "value": 2550,
+                    "unit": "lb"
+                },
+                "BEW": {
+                    "value": 1601.7,
+                    "unit": "lb"
+                },
+                "MRW": {
+                    "value": 2558,
+                    "unit": "lb"
+                },
+                "BEWarm": {
+                    "value": 87.8,
+                    "unit": "inch"
+                }
+            }
         },
         "OK-FZZ": {
             "plane": "PA-34",
@@ -546,7 +620,14 @@
         "OK-GFO": {
             "plane": "T67M",
             "config": "default",
-            "img": "/img/planes/slingsby.jpg"
+            "img": "/img/planes/slingsby.jpg",
+            "info": {},
+            "weight": {
+                "MTOW": {
+                    "value": 953,
+                    "unit": "kg"
+                }
+            }
         }
     }
 }
