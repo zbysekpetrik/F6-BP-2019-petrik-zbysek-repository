@@ -13,6 +13,7 @@
           v-mask="windMask"
           :hint="windHint"
           persistent-hint
+          clearable
           v-model="data.wind"
           :rules="[xWindRule]"
           :class="{ warn: windWarn }"
@@ -23,13 +24,14 @@
           type="number"
           label="OAT"
           suffix="°C"
+          clearable
           v-model="data.OAT"
           :class="{ warn: this.data.OAT >= 25 }"
           :error="this.data.OAT >= 25"
           :success="this.data.OAT < 25 && this.data.OAT !== null"
           @input="change()"
         ></v-text-field>
-        <v-text-field type="number" label="QNH" suffix="hPa" v-model="data.QNH" @input="change()"></v-text-field>
+        <v-text-field type="number" clearable label="QNH" suffix="hPa" v-model="data.QNH" @input="change()"></v-text-field>
       </v-form>
     </v-card-text>
   </v-card>
@@ -44,7 +46,7 @@ export default {
   },
   created() {
     this.data = this.inputData;
-    this.data.QNH = 1013;
+    this.data.QNH = 1013.25;
     this.change();
   },
   props: ["inputData", "rwyDirection"],

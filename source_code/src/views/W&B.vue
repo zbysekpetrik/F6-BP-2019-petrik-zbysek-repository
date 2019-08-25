@@ -35,18 +35,11 @@
           <flycalc-chart-scatter
             ref="chartComponent"
             style="margin-top: 16px"
+            :color-mode="$vuetify.theme.dark"
             :chart-data="[computedCG.chartData, envelope]"
           ></flycalc-chart-scatter>
           <flycalc-dynamic-list :items="summary"></flycalc-dynamic-list>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="#063761"
-            text
-            v-on:click="$refs.chartComponent.saveChart();"
-          >Save chart to PDF</v-btn>
-        </v-card-actions>
       </v-card>
     </transition>
   </div>
@@ -54,18 +47,13 @@
 
 <script>
 import { sync } from "vuex-pathify";
+import { calcMixin } from "@/modules/general.js";
+
 export default {
-  components: {
-    "flycalc-dynamic-list": () => import(/* webpackChunkName: "flycalc-dynamic-list" */"@/components/dynamicList.vue"),
-    "flycalc-tow": () => import(/* webpackChunkName: "flycalc-tow" */"@/components/tow.vue"),
-    "flycalc-rwy-condition": () => import(/* webpackChunkName: "flycalc-rwy-condition" */"@/components/rwy.vue"),
-    "flycalc-meteo-condition": () => import(/* webpackChunkName: "flycalc-meteo-condition" */"@/components/meteo.vue"),
-    "flycalc-chart-scatter": () => import(/* webpackChunkName: "flycalc-chart-scatter" */"@/components/chartScatter.vue"),
-    "flycalc-chart-bar": () => import(/* webpackChunkName: "flycalc-chart-bar" */"@/components/chartBar.vue"),
-    "flycalc-incomplete-data": () => import("@/components/nothingToCalculate.vue")
-  },
+  mixins: [calcMixin],
   data() {
     return {
+      printPDFfunction: null,
       planeInfo: null,
       plane: null,
       TOWvalidation: v =>
@@ -76,63 +64,7 @@ export default {
   created() {
     this.loadConfig();
   },
-  beforeCreate() {
-    if (this.$store.state[this.$route.params.plane] === undefined) {
-      this.$store.registerModule(this.$route.params.plane, {
-        namespaced: true,
-        state: {
-          WaB: { componentsArray: [], results: {} },
-          TO: {},
-          cruise: {PERF: {}, ROC: {}},
-          LD: {}
-        },
-        getters: {
-          "W&B": state => {
-            return state.WaB;
-          },
-          "W&B/componentsArray": state => {
-            return state.WaB.componentsArray;
-          },
-          TO: state => {
-            return state.TO;
-          },
-          LD: state => {
-            return state.LD;
-          },
-          "cruise/PERF": state => {
-            return state.cruise.PERF;
-          },
-          "cruise/ROC": state => {
-            return state.cruise.ROC;
-          }
-        },
-        mutations: {
-          [`W&B/results`](state, payload) {
-            state.WaB.results = payload;
-          },
-          [`W&B/componentsArray`](state, payload) {
-            state.WaB.componentsArray = payload;
-          },
-          [`TO`](state, payload) {
-            state.TO = payload;
-          },
-          [`LD`](state, payload) {
-            state.LD = payload;
-          },
-          [`cruise/PERF`](state, payload) {
-            state.cruise.PERF = payload;
-          },
-          [`cruise/ROC`](state, payload) {
-            state.cruise.ROC = payload;
-          }
-        }
-      });
-    }
-  },
   computed: {
-    getter() {
-      return this.$store.getters[`${this.selectedPlane[0]}/W&B`];
-    },
     componentsName() {
       let tempArray = ["BEW"];
       for (let i = 0; i < this.plane.WaB.components.length; i++) {
@@ -142,7 +74,9 @@ export default {
     },
     componentsArray: {
       get() {
-        return this.getter.componentsArray;
+        return this.$store.getters[
+          `${this.selectedPlane[0]}/W&B/componentsArray`
+        ];
       },
       set(foo) {
         this.$store.commit(`${this.selectedPlane[0]}/W&B/componentsArray`, foo);
@@ -260,7 +194,9 @@ export default {
       let ZFW = this.calculateZFW(components, componentsName);
       this.$store.commit(
         `${this.selectedPlane[0]}/TO`,
-        Object.assign({}, this.$store.getters[`${this.selectedPlane[0]}/TO`], { weight: {TOW: TOW} })
+        Object.assign({}, this.$store.getters[`${this.selectedPlane[0]}/TO`], {
+          weight: { TOW: TOW }
+        })
       );
       this.$store.commit(`${this.selectedPlane[0]}/W&B/results`, {
         CG: CG,
@@ -278,29 +214,9 @@ export default {
         TOW: TOW
       };
     },
-    printPDF() {
-      console.log("Jdeme printovat... 💩💩");
-    },
     isNumber(number) {
       if (+number) return +number;
       return 0;
-    },
-    loadConfig() {
-      this.planeInfo = this.json[this.selectedPlane[1]][this.selectedPlane[0]];
-      import(`@/planes/${this.planeInfo.plane}.js`).then(module => {
-        this.plane = module.default;
-        if(Object.keys(this.plane).includes(this.planeInfo.config))
-        {
-          this.plane = this.plane[this.planeInfo.config]
-        }
-        let temp = [];
-        temp.push(!("WaB" in this.plane));
-        temp.push(!("TO" in this.plane));
-        temp.push(!("cruise" in this.plane));
-        temp.push(!("LD" in this.plane));
-        this.bottomNavDisabled = temp;
-        return;
-      });
     }
   }
 };

@@ -6,6 +6,10 @@ import store from "@/store.js";
 import planes from "@/../public/files/planes.json"
 import "@/registerServiceWorker.js";
 import VueIdb from 'vue-idb'
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
+
+Vue.use(MuseUI);
 
 Vue.prototype.json = planes;
 
@@ -20,7 +24,7 @@ const idb = new VueIdb({
   version: 1,
   database: 'user_data',
   schemas: [
-    { user_config: 'id, store_object, created_at, name' }
+    { user_config: 'id, data, plane, username, created_at' }
   ]
 })
 

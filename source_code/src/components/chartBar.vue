@@ -1,5 +1,8 @@
 <template>
-  <div style="background-color: white; border-radius: 4px; margin: 10px !important; padding: 10px !important">
+  <div
+    style="border-radius: 4px; margin: 10px !important; padding: 10px !important"
+    :class="{'lightGrey': colorMode}"
+  >
     <canvas ref="chart-canvas"></canvas>
   </div>
 </template>
@@ -9,7 +12,7 @@ import { sync } from "vuex-pathify";
 
 import Chart from "chart.js";
 export default {
-  props: ["chartData", "chartLabels", "chartColors"],
+  props: ["chartData", "chartLabels", "chartColors", "colorMode"],
   data() {
     return {
       chartObj: null
@@ -68,7 +71,7 @@ export default {
       });
     },
     updateChart() {
-      this.chartObj.data.datasets[0].data = this.chartData
+      this.chartObj.data.datasets[0].data = this.chartData;
       this.chartObj.update();
     }
   },
@@ -79,3 +82,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.lightGrey {
+  background-color: rgb(219, 219, 219) !important;
+}
+</style>

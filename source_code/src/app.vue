@@ -1,65 +1,33 @@
 <template>
   <v-app>
-    <v-bottom-navigation
-      grow
-      :value="topNavModel[0]"
-      v-model="topNavModel[1]"
-      style="position: none;"
-    >
-      <div style="color: white !important" class="noopacity v-btn" height="56px" value="f-air">
-        <img style="width: 80px;" src="/img/icons/fair.svg" alt />
-      </div>
-      <v-btn class="noopacity" height="56px" v-on:click="planeClick" value="plane">
-        <span>{{ middleValue }}</span>
-      </v-btn>
-
-      <v-btn class="noopacity" height="56px" to="/" value="hangar">
-        <img class="kareta" style="width: 65px;" src="/img/icons/house.svg" alt />
-      </v-btn>
-    </v-bottom-navigation>
+    <flycalc-top-nav :middle-value="middleValue" :back="tabShow" @plane-click="planeClick"></flycalc-top-nav>
 
     <v-layout row justify-center>
       <v-flex xs12 sm10 md7 lg6 xl5>
-        <div style="padding: 10px 10px 10px 10px !important; z-index: 10">
+        <div style="padding: 10px 18px 10px 18px !important; z-index: 10">
           <transition name="fade">
             <router-view ref="routerComponent"></router-view>
           </transition>
         </div>
       </v-flex>
     </v-layout>
-    <v-btn v-show="false" style="z-index: 1000" @click="addToIDB()">efcecedcčtfsed</v-btn>
+
+    <v-btn v-if="false" style="z-index: 1000" @click="addToIDB()">efcecedcčtfsed</v-btn>
 
     <v-snackbar
+      :timeout="3000"
       style="margin: 20px"
-      v-model="snackBar"
+      v-model="snackBarSoon"
       color="info"
       left
       bottom
       multi-line
-      :timeout="snackBarTimeout"
     >
       Available soon ✈
-      <v-btn dark text @click="snackBar = false">Close</v-btn>
+      <v-btn dark text @click="snackBarSoon = false">Close</v-btn>
     </v-snackbar>
 
-    <v-snackbar
-      style="margin: 20px"
-      v-model="snackBariOS"
-      color="info"
-      left
-      bottom
-      multi-line
-      :timeout="0"
-    >
-      <div @click="snackBariOS = false">
-        To install the app on your iOS device in Safari:
-        tap
-        <v-img
-          style="height: 20px; width: 15px; display: inline-block;"
-          src="/img/icons/icon-share.png"
-        ></v-img>&nbsp;and then Add to Home Screen
-      </div>
-    </v-snackbar>
+    <flycalc-snackbar-ios v-if="snackBariOS" @click="snackBariOS = false"></flycalc-snackbar-ios>
 
     <div style="z-index: 20" class="tabDiv">
       <transition name="fade">
@@ -110,47 +78,65 @@
         </v-tabs>
       </transition>
     </div>
-    <transition name="fade">
-      <v-overlay style="z-index: 100" :value="overlayInfo">
-        <v-card style="margin: 10px; overflow-x: hidden; overflow-y: auto; max-height: 85vh">
-          <v-card-title>
-            <h5>Information</h5>
-          </v-card-title>
-          <v-card-content>
-            <div style="padding: 10px">
-              <v-alert prominent type="success">Effectivity: 1 SEP 19</v-alert>
-              <v-alert v-model="iPhone" type="info" prominent transition="scale-transition">
-                To install the app on your iOS device in Safari: tap
-                <v-img
-                  style="height: 20px; width: 15px; display: inline-block;"
-                  src="/img/icons/icon-share.png"
-                ></v-img>&nbsp;and then Add to Home Screen
-              </v-alert>
-              <v-alert
-                type="info"
-                prominent
-              >This application is only supportive tool for W&B and performance calculations.</v-alert>
-              <v-alert
-                type="info"
-                prominent
-              >PIC is obliged to make W&B and performance calculations based on certified POH/AFM of particular aircraft.</v-alert>
-              <v-alert
-                prominent
-                type="info"
-              >All presented performance data based on proper pilot technique.</v-alert>
-              <v-alert
-                type="warning"
-                prominent
-              >Orange color coding represents value exceeding VFR solo SOP limit. Proceed with caution!</v-alert>
-              <v-alert
-                type="error"
-                prominent
-              >Red color coding represents value exceeding aircraft certification and/or published AFM data.</v-alert>
-              <div style="text-align: right">
-                <v-btn color="primary" v-on:click="overlayInfo = false">Close</v-btn>
-              </div>
+    <v-overlay style="z-index: 100" :value="overlayInfo">
+      <v-card style="margin: 10px; overflow-x: hidden; overflow-y: auto; max-height: 85vh">
+        <v-card-title>
+          <h5>Information</h5>
+        </v-card-title>
+        <v-card-content>
+          <div style="padding: 10px">
+            <v-alert prominent type="success">Effectivity: 1 SEP 19</v-alert>
+            <v-alert v-model="iPhone" type="info" prominent transition="scale-transition">
+              To install the app on your iOS device in Safari: tap
+              <v-img
+                style="height: 20px; width: 15px; display: inline-block;"
+                src="/img/icons/icon-share.png"
+              ></v-img>&nbsp;and then Add to Home Screen
+            </v-alert>
+            <v-alert
+              type="info"
+              prominent
+            >This application is only supportive tool for W&B and performance calculations.</v-alert>
+            <v-alert
+              type="info"
+              prominent
+            >PIC is obliged to make W&B and performance calculations based on certified POH/AFM of particular aircraft.</v-alert>
+            <v-alert
+              prominent
+              type="info"
+            >All presented performance data based on proper pilot technique.</v-alert>
+            <v-alert
+              type="warning"
+              prominent
+            >Orange color coding represents value exceeding VFR solo SOP limit. Proceed with caution!</v-alert>
+            <v-alert
+              type="error"
+              prominent
+            >Red color coding represents value exceeding aircraft certification and/or published AFM data.</v-alert>
+            <div style="text-align: right">
+              <v-btn color="primary" v-on:click="overlayInfo = false">Close</v-btn>
             </div>
-          </v-card-content>
+          </div>
+        </v-card-content>
+      </v-card>
+    </v-overlay>
+    <transition name="fade">
+      <v-overlay style="z-index: 100" :value="overlaySaveName">
+        <v-card style="background-color: #512DA8 !important">
+          <v-card-title style="background-color: #311B92 !important">
+            <h5>Preset name</h5>
+          </v-card-title>
+          <v-card-text style="padding: 20px">
+            <v-text-field v-model="saveName"></v-text-field>
+          </v-card-text>
+          <v-card-actions style="text-align: right; display: block !important">
+            <v-btn text dark @click="overlaySaveName = false">Cancel</v-btn>
+            <v-btn
+              text
+              dark
+              @click="$refs.routerComponent.saveToIDB(saveName); overlaySaveName = false; saveName = ''"
+            >Save</v-btn>
+          </v-card-actions>
         </v-card>
       </v-overlay>
     </transition>
@@ -165,40 +151,48 @@
           <v-icon :class="{ cancelFab: fabModel }">mdi-plus</v-icon>
         </v-btn>
       </template>
-      <v-btn v-show="tabModel > 0" color="success" @click="print()" fab dark class="fabSize">
-        <v-icon>mdi-printer</v-icon>
-      </v-btn>
-      <v-btn
-        :color="!$vuetify.theme.dark ? '#063761' : '#063761'"
-        v-on:click="darkMode = !darkMode"
-        fab
-        dark
-        class="fabSize"
-      >
-        <v-icon>mdi-theme-light-dark</v-icon>
-      </v-btn>
       <v-btn color="info" fab dark v-on:click="overlayInfo = true" class="fabSize">
         <v-icon>mdi-information</v-icon>
       </v-btn>
+      <v-btn color="#063761" v-on:click="darkMode = !darkMode" fab dark class="fabSize">
+        <v-icon>mdi-theme-light-dark</v-icon>
+      </v-btn>
+      <template v-if="tabModel > 0">
+        <v-btn color="purple" @click="overlaySaveName = true" fab dark class="fabSize">
+          <v-icon>mdi-content-save</v-icon>
+        </v-btn>
+        <v-btn color="success" @click="print()" fab dark class="fabSize">
+          <v-icon>mdi-printer</v-icon>
+        </v-btn>
+      </template>
     </v-speed-dial>
   </v-app>
 </template>
 <script>
 import { sync } from "vuex-pathify";
-import { uuid } from 'vue-idb'
 
 export default {
   name: "App",
-  components: {},
+  components: {
+    "flycalc-top-nav": () =>
+      import(
+        /* webpackChunkName: "flycalc-top-nav" */ "@/components/topNav.vue"
+      ),
+    "flycalc-snackbar-ios": () =>
+      import(
+        /* webpackChunkName: "flycalc-snackBar-iOS" */ "@/components/snackBar_iOS.vue"
+      )
+  },
   data() {
     return {
-      snackBar: false,
-      snackBarTimeout: 6000,
+      snackBarSoon: false,
       snackBariOS: false,
       fabModel: false,
       overlayInfo: false,
       darkMode: false,
-      iPhone: false
+      iPhone: false,
+      overlaySaveName: false,
+      saveName: ""
     };
   },
   created() {
@@ -224,23 +218,16 @@ export default {
     }
   },
   methods: {
-    addToIDB() {
-      this.$db.user_config
-        .add({
-          id: uuid(),
-          store_object: "test_indexedDB",
-          created_at: new Date(),
-          name: "pastelka"
-        });
-    },
     print() {
-      this.snackBar = true;
       this.$refs.routerComponent.printPDF();
+    },
+    save() {
+      this.$refs.routerComponent.saveToIDB();
     },
     darkModeSwitch(darkMode) {
       this.$vuetify.theme.dark = darkMode;
       let metaThemeColor = document.querySelector("meta[name=theme-color]");
-      metaThemeColor.setAttribute("content", darkMode ? "#1c1c1e" : "#FFFFFF");
+      metaThemeColor.setAttribute("content", darkMode ? "#1c1c1e" : "#063761");
       metaThemeColor = document.querySelector(
         "meta[name=apple-mobile-web-app-status-bar-style]"
       );
@@ -252,7 +239,7 @@ export default {
     },
     calcClick: function(foo, disabled) {
       if (disabled) {
-        this.snackBar = true;
+        this.snackBarSoon = true;
         return;
       }
       if (this.$route.params.calc !== "") {
@@ -262,8 +249,7 @@ export default {
     },
     planeClick: function() {
       let foo = this.$store.get("lastPlane");
-      if(foo)
-      this.$router.push("/" + foo);
+      if (foo) this.$router.push("/" + foo);
     },
     onload() {
       if (

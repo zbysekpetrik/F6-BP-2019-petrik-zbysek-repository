@@ -5,16 +5,14 @@
         <h5>Weight</h5>
       </v-card-title>
       <v-card-text>
-        <v-form>
-          <v-text-field
-            :rules="totalRule"
-            type="number"
-            label="TOW"
-            suffix="kg"
-            v-model="data.TOW"
-            @input="change()"
-          ></v-text-field>
-        </v-form>
+        <v-text-field
+          :rules="[validation]"
+          type="number"
+          label="TOW"
+          suffix="kg"
+          v-model="data.TOW"
+          @input="change()"
+        ></v-text-field>
       </v-card-text>
     </v-card>
   </div>
@@ -22,7 +20,7 @@
 
 <script>
 export default {
-  props: ["totalRule", "inputData"],
+  props: ["inputData", "tow", "bew"],
   created() {
     this.data = this.inputData;
     this.change();
@@ -36,6 +34,20 @@ export default {
     change(foo) {
       foo = this.data;
       this.$emit("change", foo);
+    }
+  },
+  computed: {
+    validation() {
+      if (this.tow < this.data.TOW) {
+        return `MTOW: ${this.tow} kg`;
+      } else if (this.data.TOW < this.bew && this.data.TOW !== null) {
+        return `BEW: ${this.bew} kg`;
+      }
+      return false;
+    },
+    success() {
+      if (this.tow >= this.data.TOW && this.data.TOW >= this.bew) return true;
+      return false;
     }
   },
   watch: {
