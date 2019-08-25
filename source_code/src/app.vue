@@ -27,6 +27,19 @@
       <v-btn dark text @click="snackBarSoon = false">Close</v-btn>
     </v-snackbar>
 
+    <v-snackbar
+      :timeout="10000"
+      style="margin: 20px;; position: absolute; top: 56px"
+      v-model="snackBarBackToInfo"
+      color="info"
+      middle
+      top
+      multi-line
+    >
+      Press registration on the top to get back to the information card
+      <v-btn dark text @click="snackBarBackToInfo = false">Close</v-btn>
+    </v-snackbar>
+
     <flycalc-snackbar-ios v-if="snackBariOS" @click="snackBariOS = false"></flycalc-snackbar-ios>
 
     <div style="z-index: 20" class="tabDiv">
@@ -192,7 +205,8 @@ export default {
       darkMode: false,
       iPhone: false,
       overlaySaveName: false,
-      saveName: ""
+      saveName: "",
+      snackBarBackToInfo: false
     };
   },
   created() {
@@ -244,6 +258,10 @@ export default {
       }
       if (this.$route.params.calc !== "") {
         this.$router.push("/" + this.$route.params.plane + "/" + foo);
+        if (!localStorage.snackBarBackToInfo) {
+          localStorage.snackBarBackToInfo = true;
+          this.snackBarBackToInfo = true;
+        }
         return;
       }
     },

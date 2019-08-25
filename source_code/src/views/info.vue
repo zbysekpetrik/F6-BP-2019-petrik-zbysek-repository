@@ -32,6 +32,19 @@
     </v-snackbar>
 
     <v-snackbar
+      :timeout="10000"
+      style="margin: 20px;; position: absolute; top: 56px"
+      v-model="snackBarBackToHangar"
+      color="info"
+      middle
+      top
+      multi-line
+    >
+      Press hangar icon anytime to select another aeroplane
+      <v-btn dark text @click="snackBarBackToHangar = false">Close</v-btn>
+    </v-snackbar>
+
+    <v-snackbar
       style="margin: 20px"
       :timeout="3000"
       v-model="snackBarLoadSuccess"
@@ -103,6 +116,10 @@ export default {
   },
   mounted() {
     this.loadDB();
+    if (!localStorage.snackBarBackToHangar) {
+      localStorage.snackBarBackToHangar = true;
+      this.snackBarBackToHangar = true;
+    }
   },
   data() {
     return {
@@ -114,6 +131,7 @@ export default {
       DB: [],
       snackBarRemove: false,
       snackBarLoadSuccess: false,
+      snackBarBackToHangar: false,
       successText: "",
       tempID: null
     };
@@ -146,7 +164,7 @@ export default {
         })
         .delete()
         .then(function(deleteCount) {
-          self.successText = "plane configuration deleted successfully";
+          self.successText = "Preset deleted successfully";
           self.snackBarLoadSuccess = true;
           self.loadDB();
         });
@@ -159,7 +177,7 @@ export default {
         })
         .toArray()
         .then(data => {
-          self.successText = "plane configuration loaded successfully";
+          self.successText = "Preset loaded successfully";
           self.snackBarLoadSuccess = true;
           if (this.$store.state[this.$route.params.plane] === undefined) {
             this.$store.registerModule(this.$route.params.plane, {
