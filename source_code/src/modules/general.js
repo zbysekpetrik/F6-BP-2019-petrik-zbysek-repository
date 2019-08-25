@@ -122,8 +122,27 @@ export const calcMixin = {
                 temp.push(!("cruise" in this.plane));
                 temp.push(!("LD" in this.plane));
                 this.bottomNavDisabled = temp;
+                if(this.$route.name === "W&B" && !("WaB" in this.plane))
+                {
+                    this.$router.push("/404") 
+                }
+                if(this.$route.name === "Take-off" && !("TO" in this.plane))
+                {
+                    this.$router.push("/404") 
+                }
+                if(this.$route.name === "Cruise" && !("cruise" in this.plane))
+                {
+                    this.$router.push("/404") 
+                }
+                if(this.$route.name === "Landing" && !("LD" in this.plane))
+                {
+                    this.$router.push("/404") 
+                }
                 return;
-            });
+            }).catch(err => {
+                this.bottomNavDisabled = [true, true, true, true];
+                this.$router.push("/404")
+            })
         },
     }
 }

@@ -174,8 +174,8 @@ export default {
           this.rwyData.AD_ELEV,
           this.meteoData.OAT,
           this.meteoData.QNH
-        )
-      );
+        )/10
+      )*10;
       if (temp) Object.assign(tempObject, { climb: temp });
       temp = Math.round(
         this.plane.TO.Vy(

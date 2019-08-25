@@ -78,50 +78,48 @@
         </v-tabs>
       </transition>
     </div>
-    <transition name="fade">
-      <v-overlay style="z-index: 100" :value="overlayInfo">
-        <v-card style="margin: 10px; overflow-x: hidden; overflow-y: auto; max-height: 85vh">
-          <v-card-title>
-            <h5>Information</h5>
-          </v-card-title>
-          <v-card-content>
-            <div style="padding: 10px">
-              <v-alert prominent type="success">Effectivity: 1 SEP 19</v-alert>
-              <v-alert v-model="iPhone" type="info" prominent transition="scale-transition">
-                To install the app on your iOS device in Safari: tap
-                <v-img
-                  style="height: 20px; width: 15px; display: inline-block;"
-                  src="/img/icons/icon-share.png"
-                ></v-img>&nbsp;and then Add to Home Screen
-              </v-alert>
-              <v-alert
-                type="info"
-                prominent
-              >This application is only supportive tool for W&B and performance calculations.</v-alert>
-              <v-alert
-                type="info"
-                prominent
-              >PIC is obliged to make W&B and performance calculations based on certified POH/AFM of particular aircraft.</v-alert>
-              <v-alert
-                prominent
-                type="info"
-              >All presented performance data based on proper pilot technique.</v-alert>
-              <v-alert
-                type="warning"
-                prominent
-              >Orange color coding represents value exceeding VFR solo SOP limit. Proceed with caution!</v-alert>
-              <v-alert
-                type="error"
-                prominent
-              >Red color coding represents value exceeding aircraft certification and/or published AFM data.</v-alert>
-              <div style="text-align: right">
-                <v-btn color="primary" v-on:click="overlayInfo = false">Close</v-btn>
-              </div>
+    <v-overlay style="z-index: 100" :value="overlayInfo">
+      <v-card style="margin: 10px; overflow-x: hidden; overflow-y: auto; max-height: 85vh">
+        <v-card-title>
+          <h5>Information</h5>
+        </v-card-title>
+        <v-card-content>
+          <div style="padding: 10px">
+            <v-alert prominent type="success">Effectivity: 1 SEP 19</v-alert>
+            <v-alert v-model="iPhone" type="info" prominent transition="scale-transition">
+              To install the app on your iOS device in Safari: tap
+              <v-img
+                style="height: 20px; width: 15px; display: inline-block;"
+                src="/img/icons/icon-share.png"
+              ></v-img>&nbsp;and then Add to Home Screen
+            </v-alert>
+            <v-alert
+              type="info"
+              prominent
+            >This application is only supportive tool for W&B and performance calculations.</v-alert>
+            <v-alert
+              type="info"
+              prominent
+            >PIC is obliged to make W&B and performance calculations based on certified POH/AFM of particular aircraft.</v-alert>
+            <v-alert
+              prominent
+              type="info"
+            >All presented performance data based on proper pilot technique.</v-alert>
+            <v-alert
+              type="warning"
+              prominent
+            >Orange color coding represents value exceeding VFR solo SOP limit. Proceed with caution!</v-alert>
+            <v-alert
+              type="error"
+              prominent
+            >Red color coding represents value exceeding aircraft certification and/or published AFM data.</v-alert>
+            <div style="text-align: right">
+              <v-btn color="primary" v-on:click="overlayInfo = false">Close</v-btn>
             </div>
-          </v-card-content>
-        </v-card>
-      </v-overlay>
-    </transition>
+          </div>
+        </v-card-content>
+      </v-card>
+    </v-overlay>
     <transition name="fade">
       <v-overlay style="z-index: 100" :value="overlaySaveName">
         <v-card style="background-color: #512DA8 !important">
@@ -133,7 +131,11 @@
           </v-card-text>
           <v-card-actions style="text-align: right; display: block !important">
             <v-btn text dark @click="overlaySaveName = false">Cancel</v-btn>
-            <v-btn text dark @click="$refs.routerComponent.saveToIDB(saveName); overlaySaveName = false; saveName = ''">Save</v-btn>
+            <v-btn
+              text
+              dark
+              @click="$refs.routerComponent.saveToIDB(saveName); overlaySaveName = false; saveName = ''"
+            >Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-overlay>
@@ -152,13 +154,7 @@
       <v-btn color="info" fab dark v-on:click="overlayInfo = true" class="fabSize">
         <v-icon>mdi-information</v-icon>
       </v-btn>
-      <v-btn
-        color="#063761"
-        v-on:click="darkMode = !darkMode"
-        fab
-        dark
-        class="fabSize"
-      >
+      <v-btn color="#063761" v-on:click="darkMode = !darkMode" fab dark class="fabSize">
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
       <template v-if="tabModel > 0">

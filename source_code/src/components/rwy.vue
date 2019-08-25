@@ -30,7 +30,7 @@
             @input="customRWYchange()"
           >
             <v-icon
-              @click="customRWYmagXdes = !customRWYmagXdes; customRWYchange()"
+              @click="data.customRWY *= 10 ;customRWYmagXdes = !customRWYmagXdes; customRWYchange()"
               slot="append"
               :class="{ 'rotateArrow': customRWYmagXdes }"
             >mdi-swap-horizontal</v-icon>
@@ -45,7 +45,13 @@
           <v-text-field type="number" label="LDA" suffix="m" @input="change()" v-model="data.LDA"></v-text-field>
         </template>
 
-        <v-text-field type="number" label="RWY Slope" suffix="%" @input="change()" v-model="slope">
+        <v-text-field
+          type="number"
+          label="RWY Slope"
+          suffix="%"
+          @input="changeSlope()"
+          v-model="slope"
+        >
           <v-icon
             slot="append"
             @click="slopeExpand = !slopeExpand"
@@ -192,6 +198,10 @@ export default {
       }
       this.change();
     },
+    changeSlope() {
+      this.data.slope = this.slope;
+      this.$emit("change", this.data);
+    },
     change() {
       if (
         (+this.data.THR_ELEV || +this.data.THR_ELEV == 0) &&
@@ -216,7 +226,7 @@ export default {
     inputData() {
       if (this.data === this.inputData) return;
       this.data = this.inputData;
-      this.slope = this.data.slope
+      this.slope = this.data.slope;
       this.customRWYmagXdes = this.inputData.customRWYmagXdes;
     }
   }
