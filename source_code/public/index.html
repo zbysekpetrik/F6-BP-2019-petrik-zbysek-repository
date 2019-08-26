@@ -3,12 +3,11 @@
 
 <head>
   <meta charset="utf-8">
-  <link rel="manifest" href="/manifest.json">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>FlyCalc</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
   <link rel="shortcut icon" type="image/png" href="/img/icons/icon-72x72.png" />
-  <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
-  <link rel="apple-touch-startup-image" href="/img/icons/apple-touch-icon.png">
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="mobile-web-app-capable" content="yes">
   <link href="splashscreens/iphone5_splash.png"
     media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
     rel="apple-touch-startup-image" />
@@ -39,10 +38,6 @@
   <link href="/img/ios_splashscreen/ipadpro2_splash.png"
     media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
     rel="apple-touch-startup-image" />
-  <meta name="theme-color" content="#ffffff" />
-  <meta name="HandheldFriendly" content="true" />
-  <meta name="mobile-web-app-capable" content="yes">
-  <title>FlyCalc</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
   <style>
@@ -73,12 +68,12 @@
   </style>
 </head>
 
-<body style="background-color: #ffffff">
+<body style="background-color: #ffffff; overflow-x: hidden">
   <noscript>
     <strong>We're sorry but flycalc doesn't work properly without JavaScript enabled. Please enable it to
       continue.</strong>
   </noscript>
-  <div class="emergency-reload-button">
+  <!--<div class="emergency-reload-button">
     <p>We're sorry but this sometimes happens on iOS devices. please reinstall the app. If resintalling doesn't help
       please follow this manual</p>
     <ul style="list-style-type:circle;">
@@ -90,7 +85,7 @@
       <li>Click edit and delete the data by clicking minus sign</li>
       <li>Thank you</li>
     </ul>
-  </div>
+  </div>-->
   <div id="app"></div>
   <!-- built files will be auto injected -->
 </body>

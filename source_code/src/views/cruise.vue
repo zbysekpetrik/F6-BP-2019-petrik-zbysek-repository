@@ -19,7 +19,14 @@
             suffix="ft"
             v-model="ROCData.pressureAltitude"
           ></v-text-field>
-          <v-text-field type="number" label="OAT" suffix="°C" v-model="ROCData.OAT"></v-text-field>
+          <v-text-field
+            type="number"
+            label="OAT"
+            :hint="'ISA ' + Math.round(ISA(ROCData.pressureAltitude)) + '°C'"
+            persistent-hint
+            suffix="°C"
+            v-model="ROCData.OAT"
+          ></v-text-field>
         </v-form>
       </v-card-text>
       <v-card-title style="padding-bottom: 0px">
@@ -80,23 +87,18 @@
           ></v-select>
         </v-form>
       </v-card-text>
-      <v-card-title style="padding-bottom: 0px">
+      <v-card-title v-show="PERFprint.length > 0" style="padding-bottom: 0px">
         <h5>Summary</h5>
       </v-card-title>
       <v-card-text>
         <transition name="fade">
-          <div
-            style="padding-top: 20px"
-            v-show="(PERFData.RPM === undefined || PERFData.RPM === '') || (PERFData.OAT === undefined || PERFData.OAT === '')"
-          >
-          <flycalc-incomplete-data></flycalc-incomplete-data>
+          <div style="padding-top: 20px" v-show="PERFprint.length === 0">
+            <flycalc-incomplete-data></flycalc-incomplete-data>
           </div>
         </transition>
         <transition name="fade">
-          <div
-            v-if="!((PERFData.RPM === undefined || PERFData.RPM === '') || (PERFData.OAT === undefined || PERFData.OAT === ''))"
-          >
-            <flycalc-dynamic-list :items="PERFPrintResults"></flycalc-dynamic-list>
+          <div v-show="PERFprint.length > 0">
+            <flycalc-dynamic-list :items="PERFprint"></flycalc-dynamic-list>
           </div>
         </transition>
       </v-card-text>
@@ -108,149 +110,39 @@
 import { sync, get, set } from "vuex-pathify";
 import FlyCalc from "@/modules/calculate.js";
 import nestedObjectAssign from "nested-object-assign";
+import { calcMixin } from "@/modules/general.js";
 
 export default {
+  mixins: [calcMixin],
   data() {
     return {
+      printPDFfunction: null,
       planeInfo: null,
       ROCData: {},
       PERFData: {},
+      PERFprint: [],
       plane: null,
       TOWvalidation: v =>
         v <= this.planeInfo.weight.MTOW.value ||
         `MTOW: ${this.planeInfo.weight.MTOW.value} ${this.planeInfo.weight.MTOW.unit}`
     };
   },
-  components: {
-    "flycalc-dynamic-list": () => import(/* webpackChunkName: "flycalc-dynamic-list" */"@/components/dynamicList.vue"),
-    "flycalc-tow": () => import(/* webpackChunkName: "flycalc-tow" */"@/components/tow.vue"),
-    "flycalc-rwy-condition": () => import(/* webpackChunkName: "flycalc-rwy-condition" */"@/components/rwy.vue"),
-    "flycalc-meteo-condition": () => import(/* webpackChunkName: "flycalc-meteo-condition" */"@/components/meteo.vue"),
-    "flycalc-chart-scatter": () => import(/* webpackChunkName: "flycalc-chart-scatter" */"@/components/chartScatter.vue"),
-    "flycalc-chart-bar": () => import(/* webpackChunkName: "flycalc-chart-bar" */"@/components/chartBar.vue"),
-    "flycalc-incomplete-data": () => import("@/components/nothingToCalculate.vue")
-  },
-  beforeCreate() {
-    if (this.$store.state[this.$route.params.plane] === undefined) {
-      this.$store.registerModule(this.$route.params.plane, {
-        namespaced: true,
-        state: {
-          WaB: { componentsArray: [], results: {} },
-          TO: {},
-          cruise: { PERF: {}, ROC: {} },
-          LD: {}
-        },
-        getters: {
-          "W&B": state => {
-            return state.WaB;
-          },
-          "W&B/componentsArray": state => {
-            return state.WaB.componentsArray;
-          },
-          TO: state => {
-            return state.TO;
-          },
-          LD: state => {
-            return state.LD;
-          },
-          "cruise/PERF": state => {
-            return state.cruise.PERF;
-          },
-          "cruise/ROC": state => {
-            return state.cruise.ROC;
-          }
-        },
-        mutations: {
-          [`W&B/results`](state, payload) {
-            state.WaB.results = payload;
-          },
-          [`W&B/componentsArray`](state, payload) {
-            state.WaB.componentsArray = payload;
-          },
-          [`TO`](state, payload) {
-            state.TO = payload;
-          },
-          [`LD`](state, payload) {
-            state.LD = payload;
-          },
-          [`cruise/PERF`](state, payload) {
-            state.cruise.PERF = payload;
-          },
-          [`cruise/ROC`](state, payload) {
-            state.cruise.ROC = payload;
-          }
-        }
-      });
-    }
-  },
+
   created() {
     this.loadConfig();
-    this.ROCData = nestedObjectAssign({}, this.ROC.input);
-    this.PERFData = nestedObjectAssign({}, this.PERF.input);
+    if (this.$store.getters[`${this.selectedPlane[0]}/cruise/ROC`].input)
+      this.ROCData = this.$store.getters[
+        `${this.selectedPlane[0]}/cruise/ROC`
+      ].input;
+    if (this.$store.getters[`${this.selectedPlane[0]}/cruise/PERF`].input)
+      this.PERFData = this.$store.getters[
+        `${this.selectedPlane[0]}/cruise/PERF`
+      ].input;
+    let temp = this.PERFPrintResults();
+    this.PERFprint = temp;
   },
-  methods: {
-    printPDF() {
-      console.log("Jdeme printovat... 💩💩");
-    },
-    loadConfig() {
-      this.planeInfo = this.json[this.selectedPlane[1]][this.selectedPlane[0]];
-      import(`@/planes/${this.planeInfo.plane}.js`).then(module => {
-        this.plane = module.default;
-        if (Object.keys(this.plane).includes(this.planeInfo.config)) {
-          this.plane = this.plane[this.planeInfo.config];
-        }
-        let temp = [];
-        temp.push(!("WaB" in this.plane));
-        temp.push(!("TO" in this.plane));
-        temp.push(!("cruise" in this.plane));
-        temp.push(!("LD" in this.plane));
-        this.bottomNavDisabled = temp;
-        return;
-      });
-    },
-    PERFmutate(payload) {
-      this.$store.commit(`${this.selectedPlane[0]}/cruise/PERF`, payload);
-    },
-    ROCmutate(payload) {
-      this.$store.commit(`${this.selectedPlane[0]}/cruise/ROC`, payload);
-    },
-    ISA(pressureAltitude) {
-      return FlyCalc.ISA(pressureAltitude);
-    }
-  },
+
   computed: {
-    ROC: {
-      get() {
-        if (!this.$store.getters[`${this.selectedPlane[0]}/cruise/ROC`])
-          return {};
-        return this.$store.getters[`${this.selectedPlane[0]}/cruise/ROC`];
-      },
-      set(foo) {
-        this.ROCmutate(
-          nestedObjectAssign(
-            {},
-            this.$store.getters[`${this.selectedPlane[0]}/cruise/ROC`],
-            foo
-          )
-        );
-      }
-    },
-    PERF: {
-      get() {
-        if (!this.$store.getters[`${this.selectedPlane[0]}/cruise/PERF`])
-          return {};
-        return this.$store.getters[`${this.selectedPlane[0]}/cruise/PERF`];
-      },
-      set(foo) {
-        this.PERFmutate(
-          nestedObjectAssign(
-            {},
-            this.$store.getters[`${this.selectedPlane[0]}/cruise/PERF`],
-            foo
-          )
-        );
-      }
-    },
     ROCprintResults() {
       let tempArray = [];
       let foo = this.ROCresults;
@@ -258,7 +150,7 @@ export default {
         tempArray.push({ name: "Rate of climb", value: foo.ROC + " ft/min" });
       }
       if (foo.Vy) {
-        tempArray.push({ name: "Vy", value: foo.Vy + " kt" });
+        tempArray.push({ name: "Vy", value: foo.Vy + " KIAS" });
       }
       return tempArray;
     },
@@ -280,14 +172,28 @@ export default {
         this.plane.cruise.ROC.Vy(inputData.GW, inputData.pressureAltitude)
       );
       if (temp) Object.assign(tempObject, { Vy: temp });
-      this.ROC = { results: tempObject, input: this.ROCData };
+      this.$store.commit(`${this.selectedPlane[0]}/cruise/ROC`, {
+        results: tempObject,
+        input: this.ROCData
+      });
       return tempObject;
+    },
+    selectedPlane: sync("selectedPlane"),
+    bottomNavDisabled: sync("bottomNavDisabled")
+  },
+  methods: {
+    ISA(pressureAltitude) {
+      return FlyCalc.ISA(pressureAltitude);
     },
     PERFPrintResults() {
       let tempArray = [];
-      let foo = this.PERFResults;
+      let foo = this.PERFResults(
+        Object.assign({}, this.PERFData),
+        this.plane,
+        this.selectedPlane[0]
+      );
       if (foo.KTAS) {
-        tempArray.push({ name: "TAS", value: foo.KTAS + " kt" });
+        tempArray.push({ name: "Speed", value: foo.KTAS + " KTAS" });
       }
       if (foo.fuelConsumption) {
         tempArray.push({
@@ -309,13 +215,12 @@ export default {
       }
       return tempArray;
     },
-    PERFResults() {
+    PERFResults(inputData, plane, planeName) {
       let tempObject = {};
       let temp;
-      let inputData = nestedObjectAssign({}, this.PERFData);
       inputData = FlyCalc.emptyToZero(inputData);
       temp = Math.round(
-        this.plane.cruise.PERF.KTAS(
+        plane.cruise.PERF.KTAS(
           inputData.GW,
           inputData.RPM,
           inputData.pressureAltitude,
@@ -324,7 +229,7 @@ export default {
       );
       if (temp) Object.assign(tempObject, { KTAS: temp });
       temp = Math.round(
-        this.plane.cruise.PERF.fuelConsumption(
+        plane.cruise.PERF.fuelConsumption(
           inputData.GW,
           inputData.RPM,
           inputData.pressureAltitude,
@@ -332,7 +237,7 @@ export default {
         )
       );
       if (temp) Object.assign(tempObject, { fuelConsumption: temp });
-      temp = this.plane.cruise.PERF.endurance(
+      temp = plane.cruise.PERF.endurance(
         inputData.GW,
         inputData.RPM,
         inputData.pressureAltitude,
@@ -340,7 +245,7 @@ export default {
       );
       if (temp) Object.assign(tempObject, { endurance: temp });
       temp = Math.round(
-        this.plane.cruise.PERF.range(
+        plane.cruise.PERF.range(
           inputData.GW,
           inputData.RPM,
           inputData.pressureAltitude,
@@ -349,7 +254,7 @@ export default {
       );
       if (temp) Object.assign(tempObject, { range: temp });
       temp = Math.round(
-        this.plane.cruise.PERF.specificRange(
+        plane.cruise.PERF.specificRange(
           inputData.GW,
           inputData.RPM,
           inputData.pressureAltitude,
@@ -357,11 +262,28 @@ export default {
         )
       );
       if (temp) Object.assign(tempObject, { specificRange: temp });
-      this.PERF = { results: tempObject, input: this.PERFData };
+      this.$store.commit(`${planeName}/cruise/PERF`, {
+        results: tempObject,
+        input: this.PERFData
+      });
       return tempObject;
+    }
+  },
+  watch: {
+    PERFData: {
+      handler: function(after, before) {
+        let temp = this.PERFPrintResults();
+        this.PERFprint = temp;
+      },
+      deep: true
     },
-    selectedPlane: sync("selectedPlane"),
-    bottomNavDisabled: sync("bottomNavDisabled")
+    plane: {
+      handler: function(after, before) {
+        let temp = this.PERFPrintResults();
+        this.PERFprint = temp;
+      },
+      deep: true
+    }
   }
 };
 </script>

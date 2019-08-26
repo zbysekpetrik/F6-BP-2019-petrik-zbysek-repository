@@ -1,7 +1,11 @@
 <template>
   <div style="margin-bottom: 56px">
     <flycalc-rwy-condition landing :input-data="rwyData" @change="rwyChange"></flycalc-rwy-condition>
-    <flycalc-meteo-condition :input-data="meteoData" :rwy-direction="rwyData.RWYdirection" @change="meteoChange"></flycalc-meteo-condition>
+    <flycalc-meteo-condition
+      :input-data="meteoData"
+      :rwy-direction="rwyData.RWYdirection"
+      @change="meteoChange"
+    ></flycalc-meteo-condition>
     <v-card>
       <v-card-title style="padding-bottom: 0px">
         <h5>Summary</h5>
@@ -22,6 +26,7 @@
             :chart-data="chartData.data"
             :chart-labels="chartData.labels"
             :chart-colors="chartData.colors"
+            :color-mode="$vuetify.theme.dark"
             v-show="chartData.show"
           ></flycalc-chart-bar>
         </transition>
@@ -33,99 +38,21 @@
 <script>
 import { sync } from "vuex-pathify";
 import FlyCalc from "@/modules/calculate.js";
+import {calcMixin} from "@/modules/general.js"
 
 export default {
+  mixins: [calcMixin],
   data() {
     return {
+      printPDFfunction: null,
       planeInfo: null,
       plane: null
     };
-  },
-  components: {
-    "flycalc-dynamic-list": () => import(/* webpackChunkName: "flycalc-dynamic-list" */"@/components/dynamicList.vue"),
-    "flycalc-tow": () => import(/* webpackChunkName: "flycalc-tow" */"@/components/tow.vue"),
-    "flycalc-rwy-condition": () => import(/* webpackChunkName: "flycalc-rwy-condition" */"@/components/rwy.vue"),
-    "flycalc-meteo-condition": () => import(/* webpackChunkName: "flycalc-meteo-condition" */"@/components/meteo.vue"),
-    "flycalc-chart-scatter": () => import(/* webpackChunkName: "flycalc-chart-scatter" */"@/components/chartScatter.vue"),
-    "flycalc-chart-bar": () => import(/* webpackChunkName: "flycalc-chart-bar" */"@/components/chartBar.vue"),
-    "flycalc-incomplete-data": () => import("@/components/nothingToCalculate.vue")
-  },
-  beforeCreate() {
-    if (this.$store.state[this.$route.params.plane] === undefined) {
-      this.$store.registerModule(this.$route.params.plane, {
-        namespaced: true,
-        state: {
-          WaB: { componentsArray: [], results: {} },
-          TO: {},
-          cruise: { PERF: {}, ROC: {} },
-          LD: {}
-        },
-        getters: {
-          "W&B": state => {
-            return state.WaB;
-          },
-          "W&B/componentsArray": state => {
-            return state.WaB.componentsArray;
-          },
-          TO: state => {
-            return state.TO;
-          },
-          LD: state => {
-            return state.LD;
-          },
-          "cruise/PERF": state => {
-            return state.cruise.PERF;
-          },
-          "cruise/ROC": state => {
-            return state.cruise.ROC;
-          }
-        },
-        mutations: {
-          [`W&B/results`](state, payload) {
-            state.WaB.results = payload;
-          },
-          [`W&B/componentsArray`](state, payload) {
-            state.WaB.componentsArray = payload;
-          },
-          [`TO`](state, payload) {
-            state.TO = payload;
-          },
-          [`LD`](state, payload) {
-            state.LD = payload;
-          },
-          [`cruise/PERF`](state, payload) {
-            state.cruise.PERF = payload;
-          },
-          [`cruise/ROC`](state, payload) {
-            state.cruise.ROC = payload;
-          }
-        }
-      });
-    }
   },
   created() {
     this.loadConfig();
   },
   methods: {
-    printPDF() {
-      console.log("Jdeme printovat... 💩💩");
-    },
-    loadConfig() {
-      this.planeInfo = this.json[this.selectedPlane[1]][this.selectedPlane[0]];
-      import(`@/planes/${this.planeInfo.plane}.js`).then(module => {
-        this.plane = module.default;
-        if (Object.keys(this.plane).includes(this.planeInfo.config)) {
-          this.plane = this.plane[this.planeInfo.config];
-        }
-        let temp = [];
-        temp.push(!("WaB" in this.plane));
-        temp.push(!("TO" in this.plane));
-        temp.push(!("cruise" in this.plane));
-        temp.push(!("LD" in this.plane));
-        this.bottomNavDisabled = temp;
-        return;
-      });
-    },
     rwyChange(foo) {
       this.rwyData = foo;
     },
